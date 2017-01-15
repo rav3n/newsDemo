@@ -1,0 +1,3 @@
+[submodule "v6"]
+	path = v6
+	url = git@github.com:rav3n/v6.git
