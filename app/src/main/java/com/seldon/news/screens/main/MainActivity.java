@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
             @Override public void onError(Throwable e) {
                 e.printStackTrace();
-                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
             }
 
             @Override public void onNext(Object o) {
