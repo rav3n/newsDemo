@@ -61,7 +61,7 @@ public class SearchView extends FrameLayout {
             }
         });
         return RxTextView.textChanges(searchText)
-                .debounce(1, TimeUnit.SECONDS)
+                .debounce(3, TimeUnit.SECONDS)
                 .filter(new Func1<CharSequence, Boolean>() {
                     @Override public Boolean call(CharSequence charSequence) {
                         return charSequence.length() > 1;
