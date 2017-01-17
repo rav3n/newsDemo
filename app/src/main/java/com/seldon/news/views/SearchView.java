@@ -40,6 +40,7 @@ public class SearchView extends FrameLayout {
     public Subscription subscribe(final Subscriber subscriber) {
         searchButton.setOnClickListener(new OnClickListener() {
             @Override public void onClick(View v) {
+                hideKeyboard(v);
                 String target = searchText.getText() + "";
                 subscriber.onNext(target);
             }
@@ -48,11 +49,7 @@ public class SearchView extends FrameLayout {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    if (v != null) {
-                        InputMethodManager imm = (InputMethodManager) getContext()
-                                .getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                    }
+                    hideKeyboard(v);
                     String target = searchText.getText() + "";
                     subscriber.onNext(target);
                     return true;
@@ -74,6 +71,14 @@ public class SearchView extends FrameLayout {
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
+    }
+
+    private void hideKeyboard(View v) {
+        if (v != null) {
+            InputMethodManager imm = (InputMethodManager) getContext()
+                    .getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+        }
     }
 
     public String getSearchTarget()  {
