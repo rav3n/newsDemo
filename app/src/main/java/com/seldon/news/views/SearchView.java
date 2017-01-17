@@ -1,11 +1,12 @@
 package com.seldon.news.views;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.TimeUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -24,7 +25,7 @@ import rx.functions.Func1;
 public class SearchView extends FrameLayout {
 
     @BindView(R.id.search_string)
-    protected TextView searchTextView;
+    protected EditText searchText;
 
     @BindView(R.id.search_button)
     protected View searchButton;
@@ -38,24 +39,39 @@ public class SearchView extends FrameLayout {
     public Subscription subscribe(final Subscriber subscriber) {
         searchButton.setOnClickListener(new OnClickListener() {
             @Override public void onClick(View v) {
-                subscriber.onNext(searchTextView.getText().toString());
+                String target = searchText.getText() + "";
+                subscriber.onNext(target);
             }
         });
-        return RxTextView.textChanges(searchTextView)
+        searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    String target = searchText.getText() + "";
+                    subscriber.onNext(target);
+                    return true;
+                }
+                return false;
+            }
+        });
+        return RxTextView.textChanges(searchText)
                 .debounce(1, TimeUnit.SECONDS)
                 .filter(new Func1<CharSequence, Boolean>() {
-                    @Override
-                    public Boolean call(CharSequence charSequence) {
+                    @Override public Boolean call(CharSequence charSequence) {
                         return charSequence.length() > 1;
+                    }
+                })
+                .map(new Func1<CharSequence, String>() {
+                    @Override public String call(CharSequence charSequence) {
+                        return charSequence.toString();
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
-
     }
 
     public String getSearchTarget()  {
-        return searchTextView.getText().toString();
+        return searchText.getText().toString();
     }
 
 }

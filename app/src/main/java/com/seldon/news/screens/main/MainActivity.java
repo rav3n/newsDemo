@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @BindView(R.id.toolbar)
     protected Toolbar toolbar;
 
-    @BindView(R.id.search_string)
-    protected TextView searchTextView;
+//    @BindView(R.id.search_string)
+//    protected TextView searchTextView;
 
     @BindView(R.id.web_view)
     protected WebView webView;
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     }
 
     @Override public void setSearchText(String text) {
-        searchTextView.setText(text);
+//        searchTextView.setText(text);
     }
 
     /**
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private String getSearchTarget() {
-        return searchTextView.getText().toString();
-    }
+//    private String getSearchTarget() {
+//        return searchTextView.getText().toString();
+//    }
 }

@@ -10,6 +10,8 @@
         <EditText
             android:id="@+id/search_string"
             android:background="@android:color/transparent"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
             android:hint="Что ищем?"
             android:maxLines="1"
             android:padding="4dp"
