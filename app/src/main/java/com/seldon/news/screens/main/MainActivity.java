@@ -5,7 +5,9 @@ import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +47,13 @@ public class MainActivity extends AppCompatActivity implements MainView {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         unbinder = ButterKnife.bind(this, this);
         initToolbar();
+        initWebView();
+    }
+
+    private void initWebView() {
+        webView.setWebChromeClient(new WebChromeClient() {});
+        webView.setWebViewClient(new WebViewClient() {});
+        webView.getSettings().setJavaScriptEnabled(true);
     }
 
     private void initToolbar() {
