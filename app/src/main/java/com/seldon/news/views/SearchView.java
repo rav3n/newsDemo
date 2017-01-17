@@ -18,6 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscriber;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 
 public class SearchView extends FrameLayout {
@@ -48,6 +49,7 @@ public class SearchView extends FrameLayout {
                         return charSequence.length() > 1;
                     }
                 })
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
 
     }

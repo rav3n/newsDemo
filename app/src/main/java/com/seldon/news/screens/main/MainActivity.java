@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private void initToolbar() {
         setSupportActionBar(toolbar);
         SearchView searchView = (SearchView) toolbar.findViewById(R.id.search_view);
-        subscription = searchView.subscribe(new Subscriber() {
+        subscription = searchView.subscribe(new Subscriber<String>() {
             @Override public void onCompleted() {}
 
             @Override public void onError(Throwable e) {
@@ -58,8 +58,10 @@ public class MainActivity extends AppCompatActivity implements MainView {
                 Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
             }
 
-            @Override public void onNext(Object o) {
-                pushParamsToWeb(o.toString());
+            @Override public void onNext(String string) {
+                if (!string.isEmpty()) {
+                    pushParamsToWeb(string);
+                }
             }
         });
     }
