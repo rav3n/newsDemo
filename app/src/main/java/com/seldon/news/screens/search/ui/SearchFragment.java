@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.seldon.news.R;
@@ -27,6 +28,7 @@ import javax.crypto.spec.DESedeKeySpec;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import fw.v6.core.ui.base.V6BaseFragment;
 import fw.v6.core.utils.DebugLogger;
@@ -90,6 +92,11 @@ public class SearchFragment extends V6BaseFragment<List<SearchStringEntity>> {
     @Override protected void onScreenDestroy() {
         unbinder.unbind();
         presenter.onDestroy();
+    }
+
+    @OnClick(R.id.search_button)
+    public void doSearch() {
+        setActivityResultAndFinish(searchEditText.getText().toString());
     }
 
     @Override public void renderContent(List<SearchStringEntity> searchStringEntity) {

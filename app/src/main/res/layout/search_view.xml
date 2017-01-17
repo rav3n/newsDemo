@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:focusableInTouchMode="true"
+    android:padding="8dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/search_string"
+            android:background="@android:color/transparent"
+            android:hint="Что ищем?"
+            android:maxLines="1"
+            android:padding="4dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:id="@+id/search_button"
+            android:src="@drawable/svg_search_black"
+            android:layout_width="24dp"
+            android:layout_height="24dp" />
+</LinearLayout>

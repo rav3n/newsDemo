@@ -6,13 +6,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.seldon.news.screens.main.MainActivity">
-    <TextView
-        android:id="@+id/search_string"
-        android:padding="16dp"
-        android:text="Touch for search"
-        android:lines="1"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+        <com.seldon.news.views.SearchView
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        </android.support.v7.widget.Toolbar>
     <WebView
         android:id="@+id/web_view"
         android:layout_width="match_parent"
