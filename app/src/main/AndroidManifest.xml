@@ -9,18 +9,23 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:name=".common.app.NewsApplication"
         android:theme="@style/NewsTheme">
         <activity
             android:name=".screens.splash.SplashActivity"
             android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
+        <activity
+            android:name=".screens.menu.ui.MenuActivity"
+            android:label="@string/title_activity_menu"/>
+        <activity
+            android:name=".screens.auth.ui.AuthorizationActivity"
+            android:label="@string/title_activity_menu">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".screens.menu.ui.MenuActivity"
-            android:label="@string/title_activity_menu"/>
     </application>
 
 </manifest>
