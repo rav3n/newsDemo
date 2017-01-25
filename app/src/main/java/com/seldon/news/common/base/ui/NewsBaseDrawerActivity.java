@@ -1,4 +1,4 @@
-package com.seldon.news.common.base;
+package com.seldon.news.common.base.ui;
 
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;

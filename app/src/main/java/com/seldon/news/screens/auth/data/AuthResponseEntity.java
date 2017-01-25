@@ -2,19 +2,16 @@ package com.seldon.news.screens.auth.data;
 
 public class AuthResponseEntity {
 
-    private int code;
-    private String message;
+    private String token;
+    private String returnUrl;
 
-    public AuthResponseEntity(int code, String message) {
-        this.code = code;
-        this.message = message;
+    public AuthResponseEntity() {}
+
+    public String getToken() {
+        return token;
     }
 
-    public int getCode() {
-        return code;
-    }
-
-    public String getMessage() {
-        return message;
+    public String getReturnUrl() {
+        return returnUrl;
     }
 }

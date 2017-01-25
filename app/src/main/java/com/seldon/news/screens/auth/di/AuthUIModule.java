@@ -20,8 +20,10 @@ import butterknife.OnClick;
 import dagger.Module;
 import dagger.Provides;
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import rx.Scheduler;
+
+import static com.seldon.news.common.app.di.ApplicationDomainModule.APP_DOMAIN_IO;
+import static com.seldon.news.common.app.di.ApplicationDomainModule.APP_DOMAIN_UI;
 
 @Module
 public class AuthUIModule {
@@ -59,26 +61,27 @@ public class AuthUIModule {
              */
             AuthView view,
             AuthRouter router,
-            AuthSendInteractor interactor) {
-        return new AuthSendPresenter(view, router, interactor);
+            AuthSendInteractor interactor,
+            @Named(APP_DOMAIN_UI) Scheduler ui) {
+        return new AuthSendPresenter(view, router, interactor, ui);
     }
 
     @Provides public Observable<AuthRequestEntity> provideObservableRequest(
-            @Named(AuthUIModule.AUTH_UI_NAME) EditText name,
-            @Named(AuthUIModule.AUTH_UI_PASSWORD) EditText password,
+            @Named(AUTH_UI_NAME) EditText name,
+            @Named(AUTH_UI_PASSWORD) EditText password,
+            @Named(APP_DOMAIN_IO) Scheduler io,
+            @Named(APP_DOMAIN_UI) Scheduler ui,
             AuthDataToRequestMapper dataToRequestMapper) {
-        return Observable.combineLatest(
-                RxTextView.textChanges(name),
-                RxTextView.textChanges(password),
-                dataToRequestMapper)
-                .subscribeOn(AndroidSchedulers.mainThread());
+        return Observable.combineLatest(RxTextView.textChanges(name),
+                                        RxTextView.textChanges(password),
+                                        dataToRequestMapper)
+                .subscribeOn(ui)
+                .observeOn(io);
     }
 
-    @Provides public AuthDataToRequestMapper provideRequestToResponceMapper() {
+    @Provides public AuthDataToRequestMapper provideRequestToResponseMapper() {
         return new AuthDataToRequestMapper();
     }
-
-
 
     @Provides public AuthView provideView() {
         return viewInterface;
@@ -99,7 +102,7 @@ public class AuthUIModule {
     }
 
     @OnClick(R.id.fragment_auth_send)
-    protected void onButtonSendClickListner() {
+    protected void onButtonSendClickListener() {
         viewInterface.onSendButtonAction();
     }
 }

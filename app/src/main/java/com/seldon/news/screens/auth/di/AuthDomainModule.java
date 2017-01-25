@@ -21,11 +21,7 @@ public class AuthDomainModule {
      * Тут провайдим логику
      */
     @Provides public AuthSendInteractor provideSendInteractor(AuthApiProvider provider,
-                                                              Observable<AuthRequestEntity> observable,
-                                                              @Named(APP_DOMAIN_IO) Scheduler io,
-                                                              @Named(APP_DOMAIN_UI) Scheduler ui) {
-        // задержка для имитации загрузки, временно
-        int delay = 3;
-        return new AuthSendInteractor(provider, observable, delay, io, ui);
+                                                              Observable<AuthRequestEntity> observable) {
+        return new AuthSendInteractor(provider, observable);
     }
 }

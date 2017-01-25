@@ -1,15 +1,13 @@
 package com.seldon.news.screens.auth.ui;
 
 import android.support.annotation.Nullable;
-import android.support.v4.util.DebugUtils;
 
 import com.seldon.news.screens.auth.data.AuthResponseEntity;
 import com.seldon.news.screens.auth.domain.AuthSendInteractor;
-import com.seldon.news.screens.auth.ui.AuthRouter;
-import com.seldon.news.screens.auth.ui.AuthView;
 
 import fw.v6.core.domain.V6BasePresenter;
 import fw.v6.core.utils.V6DebugLogger;
+import rx.Scheduler;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.functions.Action0;
@@ -18,14 +16,17 @@ public class AuthSendPresenter extends V6BasePresenter<AuthView, AuthRouter> {
 
     private Subscription subscription;
     private AuthSendInteractor interactor;
+    private Scheduler ui;
 
     private boolean dataValid = true;
 
     public AuthSendPresenter(@Nullable AuthView authView,
                              @Nullable AuthRouter router,
-                             AuthSendInteractor interactor) {
+                             AuthSendInteractor interactor,
+                             Scheduler ui) {
         super(authView, router);
         this.interactor = interactor;
+        this.ui = ui;
     }
 
     public void send() {
@@ -42,6 +43,7 @@ public class AuthSendPresenter extends V6BasePresenter<AuthView, AuthRouter> {
                     getView().enableProgressDialog(true);
                 }
             })
+            .observeOn(ui)
             .subscribe(new Subscriber<AuthResponseEntity>() {
                 @Override public void onCompleted() {}
 
@@ -53,7 +55,8 @@ public class AuthSendPresenter extends V6BasePresenter<AuthView, AuthRouter> {
 
                 @Override public void onNext(AuthResponseEntity responseEntity) {
                     getView().enableProgressDialog(false);
-                    getView().showToast(responseEntity.getCode() + " " + responseEntity.getMessage());
+                    getRouter().startMenu();
+                    V6DebugLogger.d("token is " + responseEntity.getToken());
                 }
             })
         );

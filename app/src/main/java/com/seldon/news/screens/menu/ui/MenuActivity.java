@@ -4,7 +4,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 
-import com.seldon.news.common.base.NewsBaseDrawerActivity;
+import com.seldon.news.common.base.ui.NewsBaseDrawerActivity;
 
 import fw.v6.core.ui.V6SimpleErrorFragment;
 
