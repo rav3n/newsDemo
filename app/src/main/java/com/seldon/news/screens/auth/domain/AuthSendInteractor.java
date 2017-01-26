@@ -12,22 +12,13 @@ import rx.functions.Func1;
 public class AuthSendInteractor {
 
     private AuthApiProvider provider;
-    private Observable<AuthRequestEntity> observableRequest;
 
-    public AuthSendInteractor(AuthApiProvider provider,
-                              Observable<AuthRequestEntity> observableRequest) {
+    public AuthSendInteractor(AuthApiProvider provider) {
         this.provider = provider;
-        this.observableRequest = observableRequest;
     }
 
-    public Observable<AuthResponseEntity> getResponse() {
-        return observableRequest
-            .flatMap(new Func1<AuthRequestEntity, Observable<NewsResponse<AuthResponseEntity>>>() {
-                @Override
-                public Observable<NewsResponse<AuthResponseEntity>> call(AuthRequestEntity request) {
-                    return provider.login(request.getName(), request.getPassword(), request.isRememberMe());
-                }
-            })
+    public Observable<AuthResponseEntity> getResponse(AuthRequestEntity request) {
+        return provider.login(request.getName(), request.getPassword(), request.isRememberMe())
             .map(new Func1<NewsResponse<AuthResponseEntity>, AuthResponseEntity>() {
                 @Override public AuthResponseEntity call(NewsResponse<AuthResponseEntity> responseEntity) {
                     if (!responseEntity.isSuccessful()) {
@@ -35,6 +26,6 @@ public class AuthSendInteractor {
                     }
                     return responseEntity.getResponse();
                 }
-            });
+        });
     }
 }

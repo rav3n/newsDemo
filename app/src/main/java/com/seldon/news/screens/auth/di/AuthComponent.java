@@ -8,7 +8,7 @@ import dagger.Component;
 
 @Activity
 @Component(dependencies = ApplicationComponent.class, modules = {AuthUIModule.class,
-        AuthDomainModule.class, AuthDataModule.class})
+        AuthDomainModule.class})
 public interface AuthComponent {
     void inject(AuthFragment fragment);
 }
