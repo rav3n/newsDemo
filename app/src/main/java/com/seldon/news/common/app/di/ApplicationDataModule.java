@@ -28,7 +28,7 @@ public class ApplicationDataModule {
         return RetrofitBuilder.build(SERVER_URL);
     }
 
-    @Singleton @Provides public Context provideContext() {
+    @Provides public Context provideContext() {
         return context;
     }
 
