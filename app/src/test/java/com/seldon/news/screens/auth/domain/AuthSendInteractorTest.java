@@ -37,16 +37,15 @@ public class AuthSendInteractorTest {
         when(request.getPassword()).thenReturn(password);
         when(request.isRememberMe()).thenReturn(rememberMe);
 
-        Observable<AuthRequestEntity> observable = Observable.just(request);
         when(provider.login(name, password, rememberMe)).thenReturn(Observable.just(response));
         when(response.isSuccessful()).thenReturn(true);
         when(response.getResponse()).thenReturn(responseEntity);
 
 
         TestSubscriber testSubscriber = new TestSubscriber();
-        AuthSendInteractor interactor = new AuthSendInteractor(provider, observable);
+        AuthSendInteractor interactor = new AuthSendInteractor(provider);
 
-        interactor.getResponse().subscribe(testSubscriber);
+        interactor.getResponse(request).subscribe(testSubscriber);
         verify(provider).login(name, password, rememberMe);
         testSubscriber.assertNoErrors();
         testSubscriber.assertValue(responseEntity);
@@ -61,16 +60,15 @@ public class AuthSendInteractorTest {
         when(request.getPassword()).thenReturn(password);
         when(request.isRememberMe()).thenReturn(rememberMe);
 
-        Observable<AuthRequestEntity> observable = Observable.just(request);
         when(provider.login(name, password, rememberMe)).thenReturn(Observable.just(response));
         when(response.isSuccessful()).thenReturn(false);
         when(response.getResult()).thenReturn(code);
         when(response.getError()).thenReturn(error);
 
         TestSubscriber testSubscriber = new TestSubscriber();
-        AuthSendInteractor interactor = new AuthSendInteractor(provider, observable);
+        AuthSendInteractor interactor = new AuthSendInteractor(provider);
 
-        interactor.getResponse().subscribe(testSubscriber);
+        interactor.getResponse(request).subscribe(testSubscriber);
         verify(provider).login(name, password, rememberMe);
         NewsException exception = (NewsException) testSubscriber.getOnErrorEvents().get(0);
         assertEquals(exception.getCode(), code);

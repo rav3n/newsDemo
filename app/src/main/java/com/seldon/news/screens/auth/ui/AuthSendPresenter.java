@@ -2,20 +2,24 @@ package com.seldon.news.screens.auth.ui;
 
 import android.support.annotation.Nullable;
 
+import com.seldon.news.screens.auth.data.AuthRequestEntity;
 import com.seldon.news.screens.auth.data.AuthResponseEntity;
 import com.seldon.news.screens.auth.domain.AuthSendInteractor;
 
 import fw.v6.core.domain.V6BasePresenter;
 import fw.v6.core.utils.V6DebugLogger;
+import rx.Observable;
 import rx.Scheduler;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.functions.Action0;
+import rx.functions.Func1;
 
 public class AuthSendPresenter extends V6BasePresenter<AuthView, AuthRouter> {
 
     private Subscription subscription;
     private AuthSendInteractor interactor;
+    private Observable<AuthRequestEntity> observableRequest;
     private Scheduler ui;
 
     private boolean dataValid = true;
@@ -23,10 +27,12 @@ public class AuthSendPresenter extends V6BasePresenter<AuthView, AuthRouter> {
     public AuthSendPresenter(@Nullable AuthView authView,
                              @Nullable AuthRouter router,
                              AuthSendInteractor interactor,
+                             Observable<AuthRequestEntity> observableRequest,
                              Scheduler ui) {
         super(authView, router);
         this.interactor = interactor;
         this.ui = ui;
+        this.observableRequest = observableRequest;
     }
 
     public void send() {
@@ -37,7 +43,12 @@ public class AuthSendPresenter extends V6BasePresenter<AuthView, AuthRouter> {
     }
 
     private void handler() {
-        registerSubscription(interactor.getResponse()
+        registerSubscription(observableRequest
+            .flatMap(new Func1<AuthRequestEntity, Observable<AuthResponseEntity>>() {
+                @Override public Observable<AuthResponseEntity> call(AuthRequestEntity requestEntity) {
+                    return interactor.getResponse(requestEntity);
+                }
+            })
             .doOnSubscribe(new Action0() {
                 @Override public void call() {
                     getView().enableProgressDialog(true);
@@ -56,7 +67,7 @@ public class AuthSendPresenter extends V6BasePresenter<AuthView, AuthRouter> {
                 @Override public void onNext(AuthResponseEntity responseEntity) {
                     getView().enableProgressDialog(false);
                     getRouter().startMenu();
-                    V6DebugLogger.d("token is " + responseEntity.getToken());
+//                    V6DebugLogger.d("token is " + responseEntity.getToken());
                 }
             })
         );
