@@ -3,6 +3,7 @@ package com.seldon.news.common.app;
 import android.app.Application;
 
 import com.seldon.news.common.app.di.ApplicationComponent;
+import com.seldon.news.common.app.di.ApplicationDataModule;
 import com.seldon.news.common.app.di.DaggerApplicationComponent;
 
 public class NewsApplication extends Application {
@@ -14,7 +15,9 @@ public class NewsApplication extends Application {
     }
 
     public void buildComponent() {
-        component = DaggerApplicationComponent.builder().build();
+        component = DaggerApplicationComponent.builder()
+                .applicationDataModule(new ApplicationDataModule(this))
+                .build();
         component.inject(this);
     }
 

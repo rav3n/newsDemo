@@ -1,6 +1,8 @@
 package com.seldon.news.screens.auth.ui;
 
 import android.app.Fragment;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +14,11 @@ import fw.v6.core.ui.V6SimpleErrorFragment;
 import fw.v6.core.ui.base.V6BaseActivity;
 
 public class AuthorizationActivity extends V6BaseActivity {
+
+    public static void start(Context runner) {
+        Intent intent = new Intent(runner, AuthorizationActivity.class);
+        runner.startActivity(intent);
+    }
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

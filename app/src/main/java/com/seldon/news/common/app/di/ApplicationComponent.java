@@ -1,6 +1,10 @@
 package com.seldon.news.common.app.di;
 
+import android.content.Context;
+
 import com.seldon.news.common.app.NewsApplication;
+import com.seldon.news.common.app.Preferences;
+import com.seldon.news.common.user.data.UserEntity;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -20,4 +24,8 @@ public interface ApplicationComponent {
     @Named(APP_DOMAIN_IO) Scheduler provideIO();
     @Named(APP_DOMAIN_UI) Scheduler provideUI();
     Retrofit provideRetrofit();
+
+    Context provideContext();
+    UserEntity provideUser();
+    Preferences providePreferences();
 }
