@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 
 import com.seldon.news.R;
 
-public class NewsBottomNavigation extends LinearLayout {
+public class NewsBottomNavigationView extends LinearLayout {
 
     public interface NewsBottomNavigationListener {
         void onItemClickListener(View item);
@@ -16,7 +16,7 @@ public class NewsBottomNavigation extends LinearLayout {
 
     private NewsBottomNavigationListener delegate;
 
-    public NewsBottomNavigation(Context context, AttributeSet attrs) {
+    public NewsBottomNavigationView(Context context, AttributeSet attrs) {
         super(context, attrs);
         LayoutInflater.from(context).inflate(R.layout.news_bottom_navigation, this, true);
         init();

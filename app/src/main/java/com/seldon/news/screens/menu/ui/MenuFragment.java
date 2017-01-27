@@ -6,13 +6,22 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.seldon.news.R;
-import com.seldon.news.common.views.NewsBottomNavigation;
+import com.seldon.news.common.app.NewsApplication;
+import com.seldon.news.screens.menu.di.DaggerMenuComponent;
+import com.seldon.news.screens.menu.di.MenuUIModule;
 
-public class MenuFragment extends Fragment {
+import javax.inject.Inject;
+
+public class MenuFragment extends Fragment implements MenuView {
+
+    @Inject
+    protected WebView webView;
 
     @Nullable @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -21,13 +30,25 @@ public class MenuFragment extends Fragment {
 
     @Override public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        NewsBottomNavigation bottomNavigation = (NewsBottomNavigation) view
-                .findViewById(R.id.content_menu_bottom_navigation);
-        bottomNavigation.setOnItemClickListener(new NewsBottomNavigation.NewsBottomNavigationListener() {
-            @Override public void onItemClickListener(View item) {
-                TextView tv = (TextView) getView().findViewById(R.id.content_menu_text_view);
-                tv.setText(((Button) item).getText());
-            }
-        });
+        inject();
+        initWeb();
+    }
+
+    private void initWeb() {
+        webView.setWebChromeClient(new WebChromeClient());
+        webView.setWebViewClient(new WebViewClient());
+        webView.getSettings().setJavaScriptEnabled(true);
+    }
+
+    private void inject() {
+        DaggerMenuComponent.builder()
+                .applicationComponent(NewsApplication.getComponent())
+                .menuUIModule(new MenuUIModule(getView(), this, new MenuRouter(getActivity())))
+                .build()
+                .inject(this);
+    }
+
+    @Override public void showPage(String url) {
+        webView.loadUrl(url);
     }
 }
