@@ -1,11 +1,11 @@
 package com.seldon.news.common.app;
 
-import android.view.View;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -25,7 +25,7 @@ public class RetrofitBuilder {
 
         if (ENABLE_LOG) {
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-            logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
             clientBuilder.addInterceptor(logging);
         }
 
@@ -37,7 +37,16 @@ public class RetrofitBuilder {
                         .header("Content-Type", "application/json; charset=utf-8")
                         .method(original.method(), original.body())
                         .build();
-                return chain.proceed(request);
+                Response response = chain.proceed(request);
+
+                Set<String> cookies = new HashSet<>();
+                if (!response.headers("Set-Cookie").isEmpty()) {
+                    for (String header : response.headers("Set-Cookie")) {
+                        cookies.add(header);
+                    }
+                }
+
+                return response;
             }
         });
 

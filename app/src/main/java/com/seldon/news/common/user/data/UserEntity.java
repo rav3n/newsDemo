@@ -9,7 +9,7 @@ public class UserEntity implements Serializable {
 
     private UserProfile profile;
 
-    public UserEntity(String login, String password) {
+    public void setCredentials(String login, String password) {
         this.login = login;
         this.password = password;
     }
@@ -25,5 +25,17 @@ public class UserEntity implements Serializable {
     public void logout() {
         this.password = null;
         this.profile = null;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public UserProfile getProfile() {
+        return profile;
     }
 }
