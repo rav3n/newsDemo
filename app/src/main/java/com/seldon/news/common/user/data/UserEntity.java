@@ -7,7 +7,7 @@ public class UserEntity implements Serializable {
     private String login;
     private String password;
 
-    private UserProfile profile;
+    private String token;
 
     public void setCredentials(String login, String password) {
         this.login = login;
@@ -15,16 +15,16 @@ public class UserEntity implements Serializable {
     }
 
     public boolean isAuthorized() {
-        return profile != null;
+        return token != null;
     }
 
-    public void onAuthorized(UserProfile profile) {
-        this.profile = profile;
+    public void onAuthorized(String token) {
+        this.token = token;
     }
 
     public void logout() {
         this.password = null;
-        this.profile = null;
+        this.token = null;
     }
 
     public String getLogin() {
@@ -35,7 +35,7 @@ public class UserEntity implements Serializable {
         return password;
     }
 
-    public UserProfile getProfile() {
-        return profile;
-    }
+//    public UserProfile getProfile() {
+//        return profile;
+//    }
 }

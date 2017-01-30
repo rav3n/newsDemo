@@ -64,9 +64,9 @@ public class AuthUIModule {
             AuthRouter router,
             AuthSendInteractor interactor,
             Observable<AuthRequestEntity> observable,
-            UserInteractor userSaver,
+            UserInteractor userInteractor,
             @Named(APP_DOMAIN_UI) Scheduler ui) {
-        return new AuthSendPresenter(view, router, interactor, observable, userSaver, ui);
+        return new AuthSendPresenter(view, router, interactor, observable, userInteractor, ui);
     }
 
     @Provides public Observable<AuthRequestEntity> provideObservableRequest(

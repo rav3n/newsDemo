@@ -3,6 +3,7 @@ package com.seldon.news.screens.splash.ui;
 import android.support.annotation.Nullable;
 
 import com.seldon.news.common.user.data.UserEntity;
+import com.seldon.news.common.user.domain.UserInteractor;
 import com.seldon.news.screens.auth.data.AuthRequestEntity;
 import com.seldon.news.screens.auth.data.AuthResponseEntity;
 import com.seldon.news.screens.auth.domain.AuthSendInteractor;
@@ -25,6 +26,7 @@ public class SplashSendPresenter extends V6BasePresenter<SplashView, SplashRoute
     private Scheduler io;
     private UserEntity user;
     private AuthSendInteractor interactor;
+    private UserInteractor userInteractor;
 
     private Subscription subscription;
 
@@ -32,11 +34,13 @@ public class SplashSendPresenter extends V6BasePresenter<SplashView, SplashRoute
                                @Nullable SplashRouter router,
                                UserEntity user,
                                AuthSendInteractor interactor,
+                               UserInteractor userInteractor,
                                Scheduler io) {
         super(view, router);
         this.io = io;
         this.user = user;
         this.interactor = interactor;
+        this.userInteractor = userInteractor;
     }
 
     private boolean hasLoginAndPwd() {
@@ -69,6 +73,7 @@ public class SplashSendPresenter extends V6BasePresenter<SplashView, SplashRoute
                 }
 
                 @Override public void onNext(AuthResponseEntity responseEntity) {
+                    userInteractor.onAuthorized(responseEntity.getToken());
                     getRouter().startMain();
                 }
             })

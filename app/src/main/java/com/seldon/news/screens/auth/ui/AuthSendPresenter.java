@@ -23,7 +23,7 @@ public class AuthSendPresenter extends V6BasePresenter<AuthView, AuthRouter> {
 
     private AuthSendInteractor interactor;
     private Observable<AuthRequestEntity> observableRequest;
-    private UserInteractor userSaver;
+    private UserInteractor userInteractor;
     private Scheduler ui;
 
     private boolean dataValid = true;
@@ -32,13 +32,13 @@ public class AuthSendPresenter extends V6BasePresenter<AuthView, AuthRouter> {
                              @Nullable AuthRouter router,
                              AuthSendInteractor interactor,
                              Observable<AuthRequestEntity> observableRequest,
-                             UserInteractor userSaver,
+                             UserInteractor userInteractor,
                              Scheduler ui) {
         super(authView, router);
         this.interactor = interactor;
         this.ui = ui;
         this.observableRequest = observableRequest;
-        this.userSaver = userSaver;
+        this.userInteractor = userInteractor;
     }
 
     public void send() {
@@ -74,6 +74,7 @@ public class AuthSendPresenter extends V6BasePresenter<AuthView, AuthRouter> {
                         getView().enableProgressDialog(false);
                         getRouter().startMenu();
                         saveUser();
+                        userInteractor.onAuthorized(responseEntity.getToken());
                     }
                 })
         );
@@ -83,7 +84,7 @@ public class AuthSendPresenter extends V6BasePresenter<AuthView, AuthRouter> {
         observableRequest.subscribe(new Action1<AuthRequestEntity>() {
             @Override
             public void call(AuthRequestEntity entity) {
-                userSaver.saveCredentials(entity.getName(), entity.getPassword());
+                userInteractor.saveCredentials(entity.getName(), entity.getPassword());
             }
         });
     }

@@ -2,6 +2,7 @@ package com.seldon.news.common.user.domain;
 
 import com.seldon.news.common.base.data.NewsPreferences;
 import com.seldon.news.common.user.data.UserEntity;
+import com.seldon.news.common.user.data.UserProfile;
 
 public class UserInteractor {
 
@@ -17,5 +18,9 @@ public class UserInteractor {
         userEntity.setCredentials(login, password);
         newsPreferences.setUserLogin(login);
         newsPreferences.setUserPassword(password);
+    }
+
+    public void onAuthorized(String token) {
+        userEntity.onAuthorized(token);
     }
 }

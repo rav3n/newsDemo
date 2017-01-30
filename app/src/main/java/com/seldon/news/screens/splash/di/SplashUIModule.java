@@ -1,6 +1,7 @@
 package com.seldon.news.screens.splash.di;
 
 import com.seldon.news.common.user.data.UserEntity;
+import com.seldon.news.common.user.domain.UserInteractor;
 import com.seldon.news.screens.auth.domain.AuthSendInteractor;
 import com.seldon.news.screens.splash.ui.SplashRouter;
 import com.seldon.news.screens.splash.ui.SplashSendPresenter;
@@ -31,8 +32,9 @@ public class SplashUIModule {
             SplashRouter router,
             UserEntity user,
             AuthSendInteractor interactor,
+            UserInteractor userInteractor,
             @Named(APP_DOMAIN_IO) Scheduler io) {
-        return new SplashSendPresenter(view, router, user, interactor, io);
+        return new SplashSendPresenter(view, router, user, interactor, userInteractor, io);
     }
 
     @Provides public SplashView provideView() {
