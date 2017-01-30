@@ -1,6 +1,7 @@
 package com.seldon.news.screens.auth.ui;
 
 import com.seldon.news.common.app.NewsException;
+import com.seldon.news.common.user.domain.UserInteractor;
 import com.seldon.news.screens.auth.data.AuthRequestEntity;
 import com.seldon.news.screens.auth.data.AuthResponseEntity;
 import com.seldon.news.screens.auth.domain.AuthSendInteractor;
@@ -27,10 +28,11 @@ public class AuthSendPresenterTest {
         AuthRouter router = mock(AuthRouter.class);
         AuthSendInteractor interactor = mock(AuthSendInteractor.class);
         Observable<AuthRequestEntity> observable = Observable.just(mock(AuthRequestEntity.class));
+        UserInteractor userInteractor = mock(UserInteractor.class);
 
         when(interactor.getResponse((AuthRequestEntity) any())).thenReturn(Observable.just(mock(AuthResponseEntity.class)));
 
-        AuthSendPresenter presenter = new AuthSendPresenter(view, router, interactor,  observable, scheduler);
+        AuthSendPresenter presenter = new AuthSendPresenter(view, router, interactor,  observable, userInteractor, scheduler);
         presenter.send();
 
         /**
@@ -39,6 +41,7 @@ public class AuthSendPresenterTest {
         verify(view).enableProgressDialog(true);
         verify(view).enableProgressDialog(false);
         verify(router).startMenu();
+        verify(userInteractor).saveCredentials((String) any(), (String) any());
     }
 
     @Test public void sendErrorTest() {
@@ -47,10 +50,11 @@ public class AuthSendPresenterTest {
         AuthRouter router = mock(AuthRouter.class);
         AuthSendInteractor interactor = mock(AuthSendInteractor.class);
         Observable<AuthRequestEntity> observable = Observable.just(mock(AuthRequestEntity.class));
+        UserInteractor userInteractor = mock(UserInteractor.class);
 
         when(interactor.getResponse((AuthRequestEntity) any())).thenReturn(Observable.<AuthResponseEntity>error(new NewsException(0, "")));
 
-        AuthSendPresenter presenter = new AuthSendPresenter(view, router, interactor, observable, scheduler);
+        AuthSendPresenter presenter = new AuthSendPresenter(view, router, interactor, observable, userInteractor, scheduler);
         presenter.send();
 
         /**

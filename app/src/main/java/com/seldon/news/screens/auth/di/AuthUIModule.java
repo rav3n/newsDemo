@@ -5,7 +5,7 @@ import android.widget.EditText;
 
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.seldon.news.R;
-import com.seldon.news.common.user.data.UserSaveProvider;
+import com.seldon.news.common.user.domain.UserInteractor;
 import com.seldon.news.screens.auth.data.AuthRequestEntity;
 import com.seldon.news.screens.auth.domain.AuthSendInteractor;
 import com.seldon.news.screens.auth.ui.AuthDataToRequestMapper;
@@ -64,7 +64,7 @@ public class AuthUIModule {
             AuthRouter router,
             AuthSendInteractor interactor,
             Observable<AuthRequestEntity> observable,
-            UserSaveProvider userSaver,
+            UserInteractor userSaver,
             @Named(APP_DOMAIN_UI) Scheduler ui) {
         return new AuthSendPresenter(view, router, interactor, observable, userSaver, ui);
     }

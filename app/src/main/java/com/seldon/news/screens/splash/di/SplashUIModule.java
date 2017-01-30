@@ -31,9 +31,8 @@ public class SplashUIModule {
             SplashRouter router,
             UserEntity user,
             AuthSendInteractor interactor,
-            @Named(APP_DOMAIN_IO) Scheduler io,
-            @Named(APP_DOMAIN_UI) Scheduler ui) {
-        return new SplashSendPresenter(view, router, user, interactor, io, ui);
+            @Named(APP_DOMAIN_IO) Scheduler io) {
+        return new SplashSendPresenter(view, router, user, interactor, io);
     }
 
     @Provides public SplashView provideView() {

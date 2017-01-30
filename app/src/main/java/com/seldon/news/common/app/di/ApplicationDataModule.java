@@ -5,7 +5,7 @@ import android.content.Context;
 import com.seldon.news.common.app.Preferences;
 import com.seldon.news.common.app.RetrofitBuilder;
 import com.seldon.news.common.user.data.UserEntity;
-import com.seldon.news.common.user.data.UserSaveProvider;
+import com.seldon.news.common.user.domain.UserInteractor;
 
 import javax.inject.Singleton;
 
@@ -42,15 +42,8 @@ public class ApplicationDataModule {
     }
 
     @Singleton @Provides
-    public UserSaveProvider provideUserSaver(final Preferences preferences, final UserEntity user) {
-        return new UserSaveProvider() {
-            @Override
-            public void saveCredentials(String login, String password) {
-                user.setCredentials(login, password);
-                preferences.setUserLogin(login);
-                preferences.setUserPassword(password);
-            }
-        };
+    public UserInteractor provideUserSaver(final Preferences preferences, final UserEntity user) {
+        return new UserInteractor(preferences, user);
     }
 
     @Singleton @Provides public Preferences providePreferences(Context context) {

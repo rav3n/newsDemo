@@ -2,13 +2,12 @@ package com.seldon.news.screens.auth.ui;
 
 import android.support.annotation.Nullable;
 
-import com.seldon.news.common.user.data.UserSaveProvider;
+import com.seldon.news.common.user.domain.UserInteractor;
 import com.seldon.news.screens.auth.data.AuthRequestEntity;
 import com.seldon.news.screens.auth.data.AuthResponseEntity;
 import com.seldon.news.screens.auth.domain.AuthSendInteractor;
 
 import fw.v6.core.domain.V6BasePresenter;
-import fw.v6.core.utils.V6DebugLogger;
 import rx.Observable;
 import rx.Scheduler;
 import rx.Subscriber;
@@ -16,13 +15,15 @@ import rx.Subscription;
 import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func1;
+import rx.subscriptions.CompositeSubscription;
 
 public class AuthSendPresenter extends V6BasePresenter<AuthView, AuthRouter> {
 
-    private Subscription subscription;
+    private CompositeSubscription subscriptions = new CompositeSubscription();
+
     private AuthSendInteractor interactor;
     private Observable<AuthRequestEntity> observableRequest;
-    private UserSaveProvider userSaver;
+    private UserInteractor userSaver;
     private Scheduler ui;
 
     private boolean dataValid = true;
@@ -31,7 +32,7 @@ public class AuthSendPresenter extends V6BasePresenter<AuthView, AuthRouter> {
                              @Nullable AuthRouter router,
                              AuthSendInteractor interactor,
                              Observable<AuthRequestEntity> observableRequest,
-                             UserSaveProvider userSaver,
+                             UserInteractor userSaver,
                              Scheduler ui) {
         super(authView, router);
         this.interactor = interactor;
@@ -91,14 +92,11 @@ public class AuthSendPresenter extends V6BasePresenter<AuthView, AuthRouter> {
      * rx штуки для отписпи\подписки
      */
     private void registerSubscription(Subscription subscription) {
-        unregisterSubscription();
-        this.subscription = subscription;
+        subscriptions.add(subscription);
     }
 
     private void unregisterSubscription() {
-        if (subscription != null) {
-            subscription.unsubscribe();
-        }
+        subscriptions.unsubscribe();
     }
 
     @Override public void onCreate() {}

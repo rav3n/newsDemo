@@ -5,7 +5,7 @@ import android.content.Context;
 import com.seldon.news.common.app.NewsApplication;
 import com.seldon.news.common.app.Preferences;
 import com.seldon.news.common.user.data.UserEntity;
-import com.seldon.news.common.user.data.UserSaveProvider;
+import com.seldon.news.common.user.domain.UserInteractor;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -29,5 +29,5 @@ public interface ApplicationComponent {
     Context provideContext();
     UserEntity provideUser();
     Preferences providePreferences();
-    UserSaveProvider provideUserSaver();
+    UserInteractor provideUserSaver();
 }
