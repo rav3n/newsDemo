@@ -1,4 +1,4 @@
-package com.seldon.news.common.app;
+package com.seldon.news.common.base.data;
 
 public class NewsException extends Error {
     private int code;

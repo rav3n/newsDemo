@@ -1,4 +1,4 @@
-package com.seldon.news.common.app;
+package com.seldon.news.common.base.data;
 
 import android.content.Context;
 import android.content.SharedPreferences;

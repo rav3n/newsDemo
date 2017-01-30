@@ -1,6 +1,6 @@
 package com.seldon.news.screens.auth.domain;
 
-import com.seldon.news.common.app.NewsException;
+import com.seldon.news.common.base.data.NewsException;
 import com.seldon.news.common.base.data.NewsResponse;
 import com.seldon.news.screens.auth.data.AuthApiProvider;
 import com.seldon.news.screens.auth.data.AuthRequestEntity;

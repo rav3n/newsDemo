@@ -1,6 +1,6 @@
 package com.seldon.news.screens.auth.ui;
 
-import com.seldon.news.common.app.NewsException;
+import com.seldon.news.common.base.data.NewsException;
 import com.seldon.news.common.user.domain.UserInteractor;
 import com.seldon.news.screens.auth.data.AuthRequestEntity;
 import com.seldon.news.screens.auth.data.AuthResponseEntity;

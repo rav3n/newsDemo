@@ -1,6 +1,6 @@
 package com.seldon.news.common.user.domain;
 
-import com.seldon.news.common.app.Preferences;
+import com.seldon.news.common.base.data.Preferences;
 import com.seldon.news.common.user.data.UserEntity;
 
 public class UserInteractor {

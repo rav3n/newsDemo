@@ -3,7 +3,7 @@ package com.seldon.news.common.app.di;
 import android.content.Context;
 
 import com.seldon.news.common.app.NewsApplication;
-import com.seldon.news.common.app.Preferences;
+import com.seldon.news.common.base.data.Preferences;
 import com.seldon.news.common.user.data.UserEntity;
 import com.seldon.news.common.user.domain.UserInteractor;
 
