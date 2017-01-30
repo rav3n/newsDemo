@@ -2,7 +2,7 @@ package com.seldon.news.common.app.di;
 
 import android.content.Context;
 
-import com.seldon.news.common.base.data.Preferences;
+import com.seldon.news.common.base.data.NewsPreferences;
 import com.seldon.news.common.app.RetrofitBuilder;
 import com.seldon.news.common.user.data.UserEntity;
 import com.seldon.news.common.user.domain.UserInteractor;
@@ -25,28 +25,28 @@ public class ApplicationDataModule {
         this.context = context;
     }
 
-    @Singleton @Provides public Retrofit provideRetrofit() {
-        return RetrofitBuilder.build(SERVER_URL);
+    @Singleton @Provides public Retrofit provideRetrofit(NewsPreferences newsPreferences) {
+        return RetrofitBuilder.build(SERVER_URL, newsPreferences);
     }
 
     @Provides public Context provideContext() {
         return context;
     }
 
-    @Singleton @Provides public UserEntity provideUser(Preferences preferences) {
+    @Singleton @Provides public UserEntity provideUser(NewsPreferences newsPreferences) {
         UserEntity user = new UserEntity();
-        String login = preferences.getUserLogin();
-        String password = preferences.getUserPassword();
+        String login = newsPreferences.getUserLogin();
+        String password = newsPreferences.getUserPassword();
         user.setCredentials(login, password);
         return user;
     }
 
     @Singleton @Provides
-    public UserInteractor provideUserSaver(final Preferences preferences, final UserEntity user) {
-        return new UserInteractor(preferences, user);
+    public UserInteractor provideUserSaver(final NewsPreferences newsPreferences, final UserEntity user) {
+        return new UserInteractor(newsPreferences, user);
     }
 
-    @Singleton @Provides public Preferences providePreferences(Context context) {
-        return new Preferences(context, PREFERENCES_COMMON);
+    @Singleton @Provides public NewsPreferences providePreferences(Context context) {
+        return new NewsPreferences(context, PREFERENCES_COMMON);
     }
 }

@@ -1,21 +1,21 @@
 package com.seldon.news.common.user.domain;
 
-import com.seldon.news.common.base.data.Preferences;
+import com.seldon.news.common.base.data.NewsPreferences;
 import com.seldon.news.common.user.data.UserEntity;
 
 public class UserInteractor {
 
-    private Preferences preferences;
+    private NewsPreferences newsPreferences;
     private UserEntity userEntity;
 
-    public UserInteractor(Preferences preferences, UserEntity userEntity) {
-        this.preferences = preferences;
+    public UserInteractor(NewsPreferences newsPreferences, UserEntity userEntity) {
+        this.newsPreferences = newsPreferences;
         this.userEntity = userEntity;
     }
 
     public void saveCredentials(String login, String password) {
         userEntity.setCredentials(login, password);
-        preferences.setUserLogin(login);
-        preferences.setUserPassword(password);
+        newsPreferences.setUserLogin(login);
+        newsPreferences.setUserPassword(password);
     }
 }

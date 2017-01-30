@@ -3,7 +3,7 @@ package com.seldon.news.common.app.di;
 import android.content.Context;
 
 import com.seldon.news.common.app.NewsApplication;
-import com.seldon.news.common.base.data.Preferences;
+import com.seldon.news.common.base.data.NewsPreferences;
 import com.seldon.news.common.user.data.UserEntity;
 import com.seldon.news.common.user.domain.UserInteractor;
 
@@ -28,6 +28,6 @@ public interface ApplicationComponent {
 
     Context provideContext();
     UserEntity provideUser();
-    Preferences providePreferences();
+    NewsPreferences providePreferences();
     UserInteractor provideUserSaver();
 }
