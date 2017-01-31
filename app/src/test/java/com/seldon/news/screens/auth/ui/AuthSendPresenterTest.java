@@ -4,7 +4,7 @@ import com.seldon.news.common.base.data.NewsException;
 import com.seldon.news.common.user.domain.UserInteractor;
 import com.seldon.news.screens.auth.data.AuthRequestEntity;
 import com.seldon.news.screens.auth.data.AuthResponseEntity;
-import com.seldon.news.screens.auth.domain.AuthSendInteractor;
+import com.seldon.news.screens.auth.domain.AuthLoginInteractor;
 
 import org.junit.Test;
 
@@ -26,7 +26,7 @@ public class AuthSendPresenterTest {
         Scheduler scheduler = Schedulers.immediate();
         AuthView view = mock(AuthView.class);
         AuthRouter router = mock(AuthRouter.class);
-        AuthSendInteractor interactor = mock(AuthSendInteractor.class);
+        AuthLoginInteractor interactor = mock(AuthLoginInteractor.class);
         Observable<AuthRequestEntity> observable = Observable.just(mock(AuthRequestEntity.class));
         UserInteractor userInteractor = mock(UserInteractor.class);
 
@@ -48,7 +48,7 @@ public class AuthSendPresenterTest {
         Scheduler scheduler = Schedulers.immediate();
         AuthView view = mock(AuthView.class);
         AuthRouter router = mock(AuthRouter.class);
-        AuthSendInteractor interactor = mock(AuthSendInteractor.class);
+        AuthLoginInteractor interactor = mock(AuthLoginInteractor.class);
         Observable<AuthRequestEntity> observable = Observable.just(mock(AuthRequestEntity.class));
         UserInteractor userInteractor = mock(UserInteractor.class);
 

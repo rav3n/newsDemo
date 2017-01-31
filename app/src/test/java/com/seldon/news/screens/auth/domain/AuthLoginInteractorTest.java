@@ -16,7 +16,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class AuthSendInteractorTest {
+public class AuthLoginInteractorTest {
 
     private int code = 666;
     private String error = "error";
@@ -43,7 +43,7 @@ public class AuthSendInteractorTest {
 
 
         TestSubscriber testSubscriber = new TestSubscriber();
-        AuthSendInteractor interactor = new AuthSendInteractor(provider);
+        AuthLoginInteractor interactor = new AuthLoginInteractor(provider);
 
         interactor.getResponse(request).subscribe(testSubscriber);
         verify(provider).login(name, password, rememberMe);
@@ -66,7 +66,7 @@ public class AuthSendInteractorTest {
         when(response.getError()).thenReturn(error);
 
         TestSubscriber testSubscriber = new TestSubscriber();
-        AuthSendInteractor interactor = new AuthSendInteractor(provider);
+        AuthLoginInteractor interactor = new AuthLoginInteractor(provider);
 
         interactor.getResponse(request).subscribe(testSubscriber);
         verify(provider).login(name, password, rememberMe);

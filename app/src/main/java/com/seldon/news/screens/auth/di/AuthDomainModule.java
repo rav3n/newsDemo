@@ -1,7 +1,7 @@
 package com.seldon.news.screens.auth.di;
 
 import com.seldon.news.screens.auth.data.AuthApiProvider;
-import com.seldon.news.screens.auth.domain.AuthSendInteractor;
+import com.seldon.news.screens.auth.domain.AuthLoginInteractor;
 
 import dagger.Module;
 import dagger.Provides;
@@ -17,7 +17,7 @@ public class AuthDomainModule {
         return retrofit.create(AuthApiProvider.class);
     }
 
-    @Provides public AuthSendInteractor provideSendInteractor(AuthApiProvider provider) {
-        return new AuthSendInteractor(provider);
+    @Provides public AuthLoginInteractor provideSendInteractor(AuthApiProvider provider) {
+        return new AuthLoginInteractor(provider);
     }
 }

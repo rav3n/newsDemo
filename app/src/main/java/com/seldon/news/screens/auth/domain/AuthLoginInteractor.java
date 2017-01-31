@@ -9,11 +9,11 @@ import com.seldon.news.screens.auth.data.AuthResponseEntity;
 import rx.Observable;
 import rx.functions.Func1;
 
-public class AuthSendInteractor {
+public class AuthLoginInteractor {
 
     private AuthApiProvider provider;
 
-    public AuthSendInteractor(AuthApiProvider provider) {
+    public AuthLoginInteractor(AuthApiProvider provider) {
         this.provider = provider;
     }
 

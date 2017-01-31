@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import com.seldon.news.common.user.domain.UserInteractor;
 import com.seldon.news.screens.auth.data.AuthRequestEntity;
 import com.seldon.news.screens.auth.data.AuthResponseEntity;
-import com.seldon.news.screens.auth.domain.AuthSendInteractor;
+import com.seldon.news.screens.auth.domain.AuthLoginInteractor;
 
 import fw.v6.core.domain.V6BasePresenter;
 import rx.Observable;
@@ -21,7 +21,7 @@ public class AuthSendPresenter extends V6BasePresenter<AuthView, AuthRouter> {
 
     private CompositeSubscription subscriptions = new CompositeSubscription();
 
-    private AuthSendInteractor interactor;
+    private AuthLoginInteractor interactor;
     private Observable<AuthRequestEntity> observableRequest;
     private UserInteractor userInteractor;
     private Scheduler ui;
@@ -30,7 +30,7 @@ public class AuthSendPresenter extends V6BasePresenter<AuthView, AuthRouter> {
 
     public AuthSendPresenter(@Nullable AuthView authView,
                              @Nullable AuthRouter router,
-                             AuthSendInteractor interactor,
+                             AuthLoginInteractor interactor,
                              Observable<AuthRequestEntity> observableRequest,
                              UserInteractor userInteractor,
                              Scheduler ui) {
