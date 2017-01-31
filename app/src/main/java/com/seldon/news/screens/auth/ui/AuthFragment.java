@@ -15,11 +15,17 @@ import com.seldon.news.screens.auth.di.AuthUIModule;
 import com.seldon.news.screens.auth.di.DaggerAuthComponent;
 
 import javax.inject.Inject;
+import javax.inject.Named;
+
+import static com.seldon.news.screens.auth.di.AuthUIModule.AUTH_UI_BUTTON;
 
 public class AuthFragment extends Fragment implements AuthView {
 
     @Inject
-    protected AuthSendPresenter presenter;
+    protected AuthLoginPresenter presenter;
+
+    @Inject @Named(AUTH_UI_BUTTON)
+    protected View button;
 
     private ProgressDialog progressDialog;
 
@@ -66,5 +72,9 @@ public class AuthFragment extends Fragment implements AuthView {
         } else {
             progressDialog.dismiss();
         }
+    }
+
+    @Override public void enableButton(boolean enable) {
+        button.setEnabled(enable);
     }
 }

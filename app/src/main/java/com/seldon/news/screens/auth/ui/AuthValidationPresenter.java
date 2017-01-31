@@ -21,18 +21,13 @@ public class AuthValidationPresenter extends V6BasePresenter<AuthView, AuthRoute
 
     @Override public void onCreate() {
         subscription = observable.subscribe(new Subscriber<Boolean>() {
-            @Override
-            public void onCompleted() {
+            @Override public void onCompleted() {}
 
-            }
-
-            @Override
-            public void onError(Throwable e) {
+            @Override public void onError(Throwable e) {
                 e.printStackTrace();
             }
 
-            @Override
-            public void onNext(Boolean valid) {
+            @Override public void onNext(Boolean valid) {
                 getView().enableButton(valid);
             }
         });
