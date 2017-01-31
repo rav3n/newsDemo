@@ -24,7 +24,8 @@
             android:label="@string/title_activity_menu"/>
         <activity
             android:name=".screens.auth.ui.AuthorizationActivity"
-            android:label="@string/title_activity_menu"/>
+            android:label="@string/title_activity_menu"
+            android:windowSoftInputMode="adjustPan"/>
     </application>
 
 </manifest>

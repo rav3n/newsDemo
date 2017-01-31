@@ -19,7 +19,7 @@ import javax.inject.Inject;
 public class AuthFragment extends Fragment implements AuthView {
 
     @Inject
-    protected AuthLoginPresenter presenter;
+    protected AuthSendPresenter presenter;
 
     private ProgressDialog progressDialog;
 

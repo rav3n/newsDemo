@@ -3,4 +3,8 @@
     <string name="title_activity_splash">SplashActivity</string>
     <string name="title_activity_menu">MenuActivity</string>
     <string name="empty">MenuActivity</string>
+
+    <string name="auth_login">Логин</string>
+    <string name="auth_password">Пароль</string>
+    <string name="auth_button">Вход</string>
 </resources>
