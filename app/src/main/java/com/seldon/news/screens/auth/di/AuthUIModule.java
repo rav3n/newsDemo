@@ -9,8 +9,10 @@ import com.seldon.news.common.user.domain.UserInteractor;
 import com.seldon.news.screens.auth.data.AuthRequestEntity;
 import com.seldon.news.screens.auth.domain.AuthSendInteractor;
 import com.seldon.news.screens.auth.ui.AuthDataToRequestMapper;
+import com.seldon.news.screens.auth.ui.AuthDataToValidationMapper;
 import com.seldon.news.screens.auth.ui.AuthRouter;
 import com.seldon.news.screens.auth.ui.AuthSendPresenter;
+import com.seldon.news.screens.auth.ui.AuthValidationPresenter;
 import com.seldon.news.screens.auth.ui.AuthView;
 
 import javax.inject.Named;
@@ -31,6 +33,7 @@ public class AuthUIModule {
 
     public static final String AUTH_UI_NAME = "auth_ui_name";
     public static final String AUTH_UI_PASSWORD = "auth_ui_password";
+    public static final String AUTH_UI_BUTTON = "auth_ui_button";
 
     /**
      * В данном модуле будет провайдиться все что касается вьюшки, поля, кнопки, сам интефейс
@@ -46,6 +49,9 @@ public class AuthUIModule {
 
     @BindView(R.id.fragment_auth_password)
     protected EditText password;
+
+    @BindView(R.id.fragment_auth_send)
+    protected View button;
 
     public AuthUIModule(View viewContainer, AuthView viewInterface, AuthRouter routerInterface) {
         this.viewInterface = viewInterface;
@@ -86,6 +92,30 @@ public class AuthUIModule {
         return new AuthDataToRequestMapper();
     }
 
+    @Provides public AuthValidationPresenter provideValidationPresenter(
+            AuthView view,
+            AuthRouter router,
+            Observable<Boolean> observable) {
+        return new AuthValidationPresenter(view, router, observable);
+    }
+
+    @Provides public Observable<Boolean> provideValidationRequest(
+            @Named(AUTH_UI_NAME) EditText name,
+            @Named(AUTH_UI_PASSWORD) EditText password,
+            @Named(APP_DOMAIN_IO) Scheduler io,
+            @Named(APP_DOMAIN_UI) Scheduler ui,
+            AuthDataToValidationMapper mapper) {
+        return Observable.combineLatest(RxTextView.textChanges(name),
+                RxTextView.textChanges(password),
+                mapper)
+                .subscribeOn(ui)
+                .observeOn(ui);
+    }
+
+    @Provides public AuthDataToValidationMapper provideValidationMapper() {
+        return new AuthDataToValidationMapper();
+    }
+
     @Provides public AuthView provideView() {
         return viewInterface;
     }
@@ -102,6 +132,11 @@ public class AuthUIModule {
     @Provides @Named(AUTH_UI_PASSWORD)
     public EditText providePassword() {
         return password;
+    }
+
+    @Provides @Named(AUTH_UI_BUTTON)
+    public View provideButton() {
+        return button;
     }
 
     @OnClick(R.id.fragment_auth_send)
