@@ -2,7 +2,7 @@ package com.seldon.news.screens.splash.di;
 
 import com.seldon.news.common.user.data.UserEntity;
 import com.seldon.news.common.user.domain.UserInteractor;
-import com.seldon.news.screens.auth.domain.AuthSendInteractor;
+import com.seldon.news.screens.auth.domain.AuthLoginInteractor;
 import com.seldon.news.screens.splash.ui.SplashRouter;
 import com.seldon.news.screens.splash.ui.SplashSendPresenter;
 import com.seldon.news.screens.splash.ui.SplashView;
@@ -14,7 +14,6 @@ import dagger.Provides;
 import rx.Scheduler;
 
 import static com.seldon.news.common.app.di.ApplicationDomainModule.APP_DOMAIN_IO;
-import static com.seldon.news.common.app.di.ApplicationDomainModule.APP_DOMAIN_UI;
 
 @Module
 public class SplashUIModule {
@@ -31,7 +30,7 @@ public class SplashUIModule {
             SplashView view,
             SplashRouter router,
             UserEntity user,
-            AuthSendInteractor interactor,
+            AuthLoginInteractor interactor,
             UserInteractor userInteractor,
             @Named(APP_DOMAIN_IO) Scheduler io) {
         return new SplashSendPresenter(view, router, user, interactor, userInteractor, io);

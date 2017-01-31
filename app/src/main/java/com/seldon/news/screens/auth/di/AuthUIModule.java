@@ -7,7 +7,7 @@ import com.jakewharton.rxbinding.widget.RxTextView;
 import com.seldon.news.R;
 import com.seldon.news.common.user.domain.UserInteractor;
 import com.seldon.news.screens.auth.data.AuthRequestEntity;
-import com.seldon.news.screens.auth.domain.AuthSendInteractor;
+import com.seldon.news.screens.auth.domain.AuthLoginInteractor;
 import com.seldon.news.screens.auth.ui.AuthDataToRequestMapper;
 import com.seldon.news.screens.auth.ui.AuthRouter;
 import com.seldon.news.screens.auth.ui.AuthSendPresenter;
@@ -62,7 +62,7 @@ public class AuthUIModule {
              */
             AuthView view,
             AuthRouter router,
-            AuthSendInteractor interactor,
+            AuthLoginInteractor interactor,
             Observable<AuthRequestEntity> observable,
             UserInteractor userInteractor,
             @Named(APP_DOMAIN_UI) Scheduler ui) {

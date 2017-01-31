@@ -5,7 +5,7 @@ import com.seldon.news.common.base.data.NewsResponse;
 import com.seldon.news.screens.auth.data.AuthApiProvider;
 import com.seldon.news.screens.auth.data.AuthRequestEntity;
 import com.seldon.news.screens.auth.data.AuthResponseEntity;
-import com.seldon.news.screens.auth.domain.AuthSendInteractor;
+import com.seldon.news.screens.auth.domain.AuthLoginInteractor;
 
 import org.junit.Test;
 
@@ -44,7 +44,7 @@ public class UserInteractorTest {
 
 
         TestSubscriber testSubscriber = new TestSubscriber();
-        AuthSendInteractor interactor = new AuthSendInteractor(provider);
+        AuthLoginInteractor interactor = new AuthLoginInteractor(provider);
 
         interactor.getResponse(request).subscribe(testSubscriber);
         verify(provider).login(name, password, rememberMe);
@@ -67,7 +67,7 @@ public class UserInteractorTest {
         when(response.getError()).thenReturn(error);
 
         TestSubscriber testSubscriber = new TestSubscriber();
-        AuthSendInteractor interactor = new AuthSendInteractor(provider);
+        AuthLoginInteractor interactor = new AuthLoginInteractor(provider);
 
         interactor.getResponse(request).subscribe(testSubscriber);
         verify(provider).login(name, password, rememberMe);

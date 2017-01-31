@@ -6,12 +6,14 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.seldon.news.R;
+import com.seldon.news.common.Const;
 import com.seldon.news.common.app.NewsApplication;
 import com.seldon.news.screens.menu.di.DaggerMenuComponent;
 import com.seldon.news.screens.menu.di.MenuUIModule;
@@ -35,9 +37,17 @@ public class MenuFragment extends Fragment implements MenuView {
     }
 
     private void initWeb() {
+        CookieManager cookieManager = CookieManager.getInstance();
+        cookieManager.setAcceptCookie(true);
+        cookieManager.setCookie(Const.SERVER_URL, "testtest");
+
         webView.setWebChromeClient(new WebChromeClient());
         webView.setWebViewClient(new WebViewClient());
         webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setDomStorageEnabled(true);
+        webView.getSettings().setUseWideViewPort(true);
+        webView.setWebChromeClient(new WebChromeClient());
+        webView.loadUrl(Const.SERVER_URL);
     }
 
     private void inject() {

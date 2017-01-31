@@ -6,7 +6,7 @@ import com.seldon.news.common.user.data.UserEntity;
 import com.seldon.news.common.user.domain.UserInteractor;
 import com.seldon.news.screens.auth.data.AuthRequestEntity;
 import com.seldon.news.screens.auth.data.AuthResponseEntity;
-import com.seldon.news.screens.auth.domain.AuthSendInteractor;
+import com.seldon.news.screens.auth.domain.AuthLoginInteractor;
 
 import java.util.concurrent.TimeUnit;
 
@@ -25,7 +25,7 @@ public class SplashSendPresenter extends V6BasePresenter<SplashView, SplashRoute
 
     private Scheduler io;
     private UserEntity user;
-    private AuthSendInteractor interactor;
+    private AuthLoginInteractor interactor;
     private UserInteractor userInteractor;
 
     private Subscription subscription;
@@ -33,7 +33,7 @@ public class SplashSendPresenter extends V6BasePresenter<SplashView, SplashRoute
     public SplashSendPresenter(@Nullable SplashView view,
                                @Nullable SplashRouter router,
                                UserEntity user,
-                               AuthSendInteractor interactor,
+                               AuthLoginInteractor interactor,
                                UserInteractor userInteractor,
                                Scheduler io) {
         super(view, router);
