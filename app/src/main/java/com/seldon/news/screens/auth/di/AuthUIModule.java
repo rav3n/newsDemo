@@ -10,7 +10,7 @@ import com.seldon.news.screens.auth.data.AuthRequestEntity;
 import com.seldon.news.screens.auth.domain.AuthLoginInteractor;
 import com.seldon.news.screens.auth.ui.AuthDataToRequestMapper;
 import com.seldon.news.screens.auth.ui.AuthRouter;
-import com.seldon.news.screens.auth.ui.AuthSendPresenter;
+import com.seldon.news.screens.auth.ui.AuthLoginPresenter;
 import com.seldon.news.screens.auth.ui.AuthView;
 
 import javax.inject.Named;
@@ -53,7 +53,7 @@ public class AuthUIModule {
         ButterKnife.bind(this, viewContainer);
     }
 
-    @Provides public AuthSendPresenter provideSendPresenter(
+    @Provides public AuthLoginPresenter provideSendPresenter(
             /**
              * Вот именно тут начинается вся магия даггера,
              *  даггер будет бегать по графу зависимостей и
@@ -66,7 +66,7 @@ public class AuthUIModule {
             Observable<AuthRequestEntity> observable,
             UserInteractor userInteractor,
             @Named(APP_DOMAIN_UI) Scheduler ui) {
-        return new AuthSendPresenter(view, router, interactor, observable, userInteractor, ui);
+        return new AuthLoginPresenter(view, router, interactor, observable, userInteractor, ui);
     }
 
     @Provides public Observable<AuthRequestEntity> provideObservableRequest(

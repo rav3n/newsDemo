@@ -17,7 +17,7 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.subscriptions.CompositeSubscription;
 
-public class AuthSendPresenter extends V6BasePresenter<AuthView, AuthRouter> {
+public class AuthLoginPresenter extends V6BasePresenter<AuthView, AuthRouter> {
 
     private CompositeSubscription subscriptions = new CompositeSubscription();
 
@@ -28,12 +28,12 @@ public class AuthSendPresenter extends V6BasePresenter<AuthView, AuthRouter> {
 
     private boolean dataValid = true;
 
-    public AuthSendPresenter(@Nullable AuthView authView,
-                             @Nullable AuthRouter router,
-                             AuthLoginInteractor interactor,
-                             Observable<AuthRequestEntity> observableRequest,
-                             UserInteractor userInteractor,
-                             Scheduler ui) {
+    public AuthLoginPresenter(@Nullable AuthView authView,
+                              @Nullable AuthRouter router,
+                              AuthLoginInteractor interactor,
+                              Observable<AuthRequestEntity> observableRequest,
+                              UserInteractor userInteractor,
+                              Scheduler ui) {
         super(authView, router);
         this.interactor = interactor;
         this.ui = ui;
@@ -44,11 +44,11 @@ public class AuthSendPresenter extends V6BasePresenter<AuthView, AuthRouter> {
     public void send() {
         // Валидацию пока не делаю
         if (dataValid) {
-            handler();
+            tryLogin();
         }
     }
 
-    private void handler() {
+    private void tryLogin() {
         registerSubscription(observableRequest
                 .flatMap(new Func1<AuthRequestEntity, Observable<AuthResponseEntity>>() {
                     @Override public Observable<AuthResponseEntity> call(AuthRequestEntity requestEntity) {
@@ -74,10 +74,14 @@ public class AuthSendPresenter extends V6BasePresenter<AuthView, AuthRouter> {
                         getView().enableProgressDialog(false);
                         getRouter().startMenu();
                         saveUser();
-                        userInteractor.onAuthorized(responseEntity.getToken());
+                        saveToken(responseEntity.getToken());
                     }
                 })
         );
+    }
+
+    private void saveToken(String token) {
+        userInteractor.onAuthorized(token);
     }
 
     private void saveUser() {

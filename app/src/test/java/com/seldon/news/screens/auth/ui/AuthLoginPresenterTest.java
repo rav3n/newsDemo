@@ -17,7 +17,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class AuthSendPresenterTest {
+public class AuthLoginPresenterTest {
 
     @Test public void sendTest() {
         /**
@@ -32,7 +32,7 @@ public class AuthSendPresenterTest {
 
         when(interactor.getResponse((AuthRequestEntity) any())).thenReturn(Observable.just(mock(AuthResponseEntity.class)));
 
-        AuthSendPresenter presenter = new AuthSendPresenter(view, router, interactor,  observable, userInteractor, scheduler);
+        AuthLoginPresenter presenter = new AuthLoginPresenter(view, router, interactor,  observable, userInteractor, scheduler);
         presenter.send();
 
         /**
@@ -54,7 +54,7 @@ public class AuthSendPresenterTest {
 
         when(interactor.getResponse((AuthRequestEntity) any())).thenReturn(Observable.<AuthResponseEntity>error(new NewsException(0, "")));
 
-        AuthSendPresenter presenter = new AuthSendPresenter(view, router, interactor, observable, userInteractor, scheduler);
+        AuthLoginPresenter presenter = new AuthLoginPresenter(view, router, interactor, observable, userInteractor, scheduler);
         presenter.send();
 
         /**
