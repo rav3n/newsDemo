@@ -1,6 +1,5 @@
 package com.seldon.news.screens.menu.di;
 
-import android.support.design.widget.BottomNavigationView;
 import android.view.View;
 import android.webkit.WebView;
 

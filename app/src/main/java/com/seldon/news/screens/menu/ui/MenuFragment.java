@@ -8,15 +8,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.AdapterView;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
+import android.widget.Toast;
 
 import com.seldon.news.R;
 import com.seldon.news.common.Const;
 import com.seldon.news.common.app.NewsApplication;
 import com.seldon.news.screens.menu.di.DaggerMenuComponent;
 import com.seldon.news.screens.menu.di.MenuUIModule;
+import com.seldon.news.screens.menu.domain.MenuRubricsPresenter;
 
 import javax.inject.Inject;
 
@@ -24,6 +28,9 @@ public class MenuFragment extends Fragment implements MenuView {
 
     @Inject
     protected WebView webView;
+
+    @Inject
+    protected MenuRubricsPresenter rubricsPresenter;
 
     @Nullable @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,6 +41,12 @@ public class MenuFragment extends Fragment implements MenuView {
         super.onViewCreated(view, savedInstanceState);
         inject();
         initWeb();
+        rubricsPresenter.loadAllRubrics();
+    }
+
+    @Override public void onDestroyView() {
+        super.onDestroyView();
+        rubricsPresenter.onDestroy();
     }
 
     private void initWeb() {
@@ -60,5 +73,29 @@ public class MenuFragment extends Fragment implements MenuView {
 
     @Override public void showPage(String url) {
         webView.loadUrl(url);
+    }
+
+    @Override public void showMenuSpinner(SpinnerAdapter adapter) {
+        Spinner spinner = (Spinner) getActivity().findViewById(R.id.toolbar_new_spinner);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            private boolean first = true;
+
+            @Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (!first) {
+                    MenuSpinnerItem item = (MenuSpinnerItem) parent.getAdapter().getItem(position);
+                    Toast.makeText(getActivity(), item.getTitle(), Toast.LENGTH_LONG).show();
+                }
+                first = false;
+            }
+
+            @Override public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        spinner.setAdapter(adapter);
+    }
+
+    @Override public void showError(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
     }
 }

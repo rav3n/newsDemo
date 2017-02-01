@@ -6,6 +6,12 @@ public class NewsResponse<T> {
     private String error;
     private T response;
 
+    public NewsResponse(T response) {
+        result = 200;
+        error = "";
+        this.response = response;
+    }
+
     public int getResult() {
         return result;
     }

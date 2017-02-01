@@ -4,5 +4,10 @@
     android:id="@+id/toolbar_news"
     android:background="@color/colorPrimary"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"/>
+    android:layout_height="wrap_content">
+    <Spinner
+        android:id="@+id/toolbar_new_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+</android.support.v7.widget.Toolbar>
 

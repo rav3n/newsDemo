@@ -14,11 +14,11 @@ public class RubricsInteractor {
         this.provider = provider;
     }
 
-    public Observable<RubricEntity> fetchRubrics() {
-        return provider.getRubrics().map(new NewsResponseMapper<RubricEntity>());
+    public Observable<RubricEntity[]> fetchRubrics() {
+        return provider.getRubrics().map(new NewsResponseMapper<RubricEntity[]>());
     }
 
-    public Observable<RubricEntity> fetchCustomUserRubrics() {
-        return provider.getCustomUserRubric().map(new NewsResponseMapper<RubricEntity>());
+    public Observable<RubricEntity[]> fetchCustomUserRubrics() {
+        return provider.getCustomUserRubric().map(new NewsResponseMapper<RubricEntity[]>());
     }
 }

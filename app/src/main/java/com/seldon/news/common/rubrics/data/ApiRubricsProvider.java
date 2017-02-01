@@ -8,8 +8,8 @@ import rx.Observable;
 public interface ApiRubricsProvider {
 
     @GET("api/UsersActionApi/GetRubrics")
-    public Observable<NewsResponse<RubricEntity>> getRubrics();
+    public Observable<NewsResponse<RubricEntity[]>> getRubrics();
 
     @GET("api/UsersActionApi/GetCustomUserRubric")
-    public Observable<NewsResponse<RubricEntity>> getCustomUserRubric();
+    public Observable<NewsResponse<RubricEntity[]>> getCustomUserRubric();
 }
