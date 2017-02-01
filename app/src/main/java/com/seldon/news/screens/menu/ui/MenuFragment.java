@@ -75,7 +75,7 @@ public class MenuFragment extends Fragment implements MenuView {
         webView.loadUrl(url);
     }
 
-    @Override public void showMenuSpinner(SpinnerAdapter adapter) {
+    @Override public void showMenuSpinner(MenuViewModel viewModel) {
         Spinner spinner = (Spinner) getActivity().findViewById(R.id.toolbar_new_spinner);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -92,7 +92,7 @@ public class MenuFragment extends Fragment implements MenuView {
             @Override public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        spinner.setAdapter(adapter);
+        spinner.setAdapter(viewModel.getSpinnerAdapter(getActivity()));
     }
 
     @Override public void showError(String message) {

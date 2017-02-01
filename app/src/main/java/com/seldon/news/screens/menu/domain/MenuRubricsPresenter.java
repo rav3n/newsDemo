@@ -80,7 +80,7 @@ public class MenuRubricsPresenter extends V6BasePresenter<MenuView, MenuRouter> 
                 }
 
                 @Override public void onNext(MenuViewModel viewModel) {
-                    getView().showMenuSpinner(viewModel.getSpinnerAdapter(getView().getContext()));
+                    getView().showMenuSpinner(viewModel);
                 }
             })
         );

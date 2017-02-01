@@ -31,7 +31,7 @@ public class MenuRubricsPresenterTest {
 
         MenuRubricsPresenter presenter = new MenuRubricsPresenter(view, router, scheduler, scheduler, interactor);
         presenter.loadAllRubrics();
-        verify(view).showMenuSpinner((SpinnerAdapter) any());
+        verify(view).showMenuSpinner((MenuViewModel) any());
     }
 
     @Test public void loadAllRubricsErrorTest() {
