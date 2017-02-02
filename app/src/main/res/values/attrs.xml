@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="SeldonFont">
+        <attr name="font" format="enum">
+            <enum name="normal" value="0" />
+            <enum name="medium" value="1" />
+            <enum name="bold" value="2" />
+            <enum name="light" value="3" />
+        </attr>
+        <attr name="cases" format="enum">
+            <enum name="normal" value="0" />
+            <enum name="lower" value="1" />
+            <enum name="upper" value="2" />
+        </attr>
+    </declare-styleable>
+
+</resources>

@@ -23,6 +23,8 @@ public class AuthFragment extends Fragment implements AuthView {
 
     @Inject
     protected AuthLoginPresenter presenter;
+    @Inject
+    protected AuthValidationPresenter validation;
 
     @Inject @Named(AUTH_UI_BUTTON)
     protected View button;
@@ -40,6 +42,7 @@ public class AuthFragment extends Fragment implements AuthView {
     @Override public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         inject();
+        validation.onCreate();
     }
 
     /**
@@ -56,6 +59,7 @@ public class AuthFragment extends Fragment implements AuthView {
     @Override public void onDestroyView() {
         super.onDestroyView();
         presenter.onDestroy();
+        validation.onDestroy();
     }
 
     @Override public void showToast(String message) {

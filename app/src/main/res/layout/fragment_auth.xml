@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:gravity="center"
     android:layout_width="match_parent"
@@ -12,46 +13,55 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_centerInParent="true"
-        android:layout_margin="@dimen/auth_margin">
+        android:layout_marginLeft="@dimen/auth_margin"
+        android:layout_marginRight="@dimen/auth_margin">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@color/auth_form_bg"
-            android:padding="@dimen/auth_form_padding">
+            android:background="@drawable/auth_form_bg"
+            android:paddingLeft="@dimen/auth_form_padding_hor"
+            android:paddingRight="@dimen/auth_form_padding_hor"
+            android:paddingTop="@dimen/auth_form_padding_vert"
+            android:paddingBottom="@dimen/auth_form_padding_vert">
 
-            <EditText
+            <com.seldon.news.common.widget.NewsEditText
                 style="@style/AuthEditText"
                 android:id="@+id/fragment_auth_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/auth_login"/>
 
-            <EditText
+            <com.seldon.news.common.widget.NewsEditText
                 style="@style/AuthEditText"
                 android:id="@+id/fragment_auth_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/auth_inputs_offset"
                 android:inputType="textPassword"
                 android:hint="@string/auth_password"/>
         </LinearLayout>
 
-        <Button
+        <com.seldon.news.common.widget.NewsTextView
             android:id="@+id/fragment_auth_send"
             android:layout_width="match_parent"
             android:layout_height="@dimen/auth_button_height"
             android:layout_marginTop="@dimen/auth_button_offset"
+            android:gravity="center"
             android:background="@drawable/auth_button_bg"
             android:textColor="@drawable/auth_button_text"
             android:textSize="@dimen/auth_text_size"
-            android:text="@string/auth_button"/>
+            android:text="@string/auth_button"
+            app:font="medium"/>
     </LinearLayout>
 
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:background="#000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/auth_logo_offset"
         android:layout_centerHorizontal="true"
-        android:layout_above="@id/fragment_auth_form"/>
+        android:layout_above="@id/fragment_auth_form"
+        android:contentDescription="@null"
+        app:srcCompat="@drawable/svg_logo"/>
 </RelativeLayout>

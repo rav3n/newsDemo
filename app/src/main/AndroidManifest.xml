@@ -12,8 +12,7 @@
         android:name=".common.app.NewsApplication"
         android:theme="@style/NewsTheme">
         <activity
-            android:name=".screens.splash.ui.SplashActivity"
-            android:theme="@android:style/Theme.NoTitleBar">
+            android:name=".screens.splash.ui.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -26,7 +25,7 @@
         <activity
             android:name=".screens.auth.ui.AuthorizationActivity"
             android:label="@string/title_activity_menu"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustResize"/>
     </application>
 
 </manifest>
