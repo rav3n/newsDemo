@@ -9,6 +9,10 @@
     <string name="auth_password">Пароль</string>
     <string name="auth_button">Вход</string>
 
+    <string name="menu_news">Новости</string>
+    <string name="menu_search">Поиск</string>
+    <string name="menu_user">Аккаунт</string>
+
     <string name="menu_spinner_home">Главная</string>
     <string name="menu_spinner_all_rubrics">Рубрики</string>
     <string name="menu_spinner_user_rubrics">Пользовательские</string>

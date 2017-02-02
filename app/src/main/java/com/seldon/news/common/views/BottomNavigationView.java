@@ -4,11 +4,12 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.seldon.news.R;
 
-public class NewsBottomNavigationView extends LinearLayout {
+public class BottomNavigationView extends FrameLayout {
 
     public interface NewsBottomNavigationListener {
         void onItemClickListener(View item);
@@ -16,9 +17,9 @@ public class NewsBottomNavigationView extends LinearLayout {
 
     private NewsBottomNavigationListener delegate;
 
-    public NewsBottomNavigationView(Context context, AttributeSet attrs) {
+    public BottomNavigationView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        LayoutInflater.from(context).inflate(R.layout.news_bottom_navigation, this, true);
+        LayoutInflater.from(context).inflate(R.layout.bottom_navigation, this, true);
         init();
     }
 

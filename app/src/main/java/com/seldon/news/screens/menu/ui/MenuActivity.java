@@ -6,11 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.seldon.news.common.base.ui.NewsBaseDrawerActivity;
+import com.seldon.news.common.base.ui.NewsBaseActivity;
 
 import fw.v6.core.ui.V6SimpleErrorFragment;
 
-public class MenuActivity extends NewsBaseDrawerActivity {
+public class MenuActivity extends NewsBaseActivity {
 
     public static void start(Context runner) {
         Intent intent = new Intent(runner, MenuActivity.class);

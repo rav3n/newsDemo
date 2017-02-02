@@ -8,8 +8,9 @@
         android:id="@+id/content_menu_web_view"
         android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-    <com.seldon.news.common.views.NewsBottomNavigationView
+        android:layout_height="0dp"/>
+
+    <com.seldon.news.common.views.BottomNavigationView
         android:id="@+id/content_menu_bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

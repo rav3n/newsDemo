@@ -4,7 +4,7 @@ import android.view.View;
 import android.webkit.WebView;
 
 import com.seldon.news.R;
-import com.seldon.news.common.views.NewsBottomNavigationView;
+import com.seldon.news.common.views.BottomNavigationView;
 import com.seldon.news.screens.menu.ui.MenuRouter;
 import com.seldon.news.screens.menu.ui.MenuView;
 
@@ -23,7 +23,7 @@ public class MenuUIModule {
     protected WebView webView;
 
     @BindView(R.id.content_menu_bottom_navigation)
-    protected NewsBottomNavigationView navigationMenu;
+    protected BottomNavigationView navigationMenu;
 
     public MenuUIModule(View viewContainer, MenuView viewInterface, MenuRouter routerInterface) {
         this.viewInterface = viewInterface;
@@ -39,7 +39,8 @@ public class MenuUIModule {
         return routerInterface;
     }
 
-    @Provides NewsBottomNavigationView provideMenu() {
+    @Provides
+    BottomNavigationView provideMenu() {
         return navigationMenu;
     }
 
