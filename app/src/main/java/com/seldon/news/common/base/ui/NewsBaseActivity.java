@@ -24,7 +24,7 @@ public abstract class NewsBaseActivity extends V6BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base_news);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        setupToolbar();
+//        setupToolbar();
         showContent();
     }
 

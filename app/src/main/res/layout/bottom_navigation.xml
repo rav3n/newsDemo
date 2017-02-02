@@ -2,11 +2,13 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottom_navigation_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/navigation_bg">
 
     <com.seldon.news.common.views.BottomNavigationItemView
+        android:id="@+id/bottom_navigation_home"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -14,6 +16,7 @@
         app:icon="@drawable/svg_menu_news"/>
 
     <com.seldon.news.common.views.BottomNavigationItemView
+        android:id="@+id/bottom_navigation_search"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -21,6 +24,7 @@
         app:icon="@drawable/svg_menu_search"/>
 
     <com.seldon.news.common.views.BottomNavigationItemView
+        android:id="@+id/bottom_navigation_profile"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"

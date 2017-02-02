@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
@@ -24,8 +25,9 @@ public class BottomNavigationView extends FrameLayout {
     }
 
     private void init() {
-        for (int i = 0; i < getChildCount(); i++) {
-            View child = getChildAt(i);
+        ViewGroup container = (ViewGroup) findViewById(R.id.bottom_navigation_container);
+        for (int i = 0; i < container.getChildCount(); i++) {
+            View child = container.getChildAt(i);
             child.setOnClickListener(new OnClickListener() {
                 @Override public void onClick(View v) {
                     if (delegate != null) {
