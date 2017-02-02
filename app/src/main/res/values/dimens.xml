@@ -8,5 +8,5 @@
     <dimen name="auth_inputs_offset">5dp</dimen>
     <dimen name="auth_button_offset">3dp</dimen>
     <dimen name="auth_button_height">40dp</dimen>
-
+    <dimen name="menu_viewpager_height">48dp</dimen>
 </resources>

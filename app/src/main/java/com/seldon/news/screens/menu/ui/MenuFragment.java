@@ -85,10 +85,21 @@ public class MenuFragment extends Fragment implements MenuView {
         return tv;
     }
 
+    private View firstView(String s, final MenuViewModel viewModel) {
+        TextView tv = new TextView(getActivity());
+        tv.setText(s);
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                RubricsBuilder.showDialog(getActivity(), viewModel);
+            }
+        });
+        return tv;
+    }
+
     @Override public void showMenuSpinner(MenuViewModel viewModel) {
         final ViewPager pager = (ViewPager) getView().findViewById(R.id.content_menu_view_pager);
         final List<View> views = new ArrayList<>();
-        views.add(createTemp("home view"));
+        views.add(firstView("home", viewModel));
         views.add(createTemp("search view"));
         views.add(createTemp("profile view"));
         pager.setAdapter(new PagerAdapter() {

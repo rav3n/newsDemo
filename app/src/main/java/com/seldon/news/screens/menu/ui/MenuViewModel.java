@@ -3,6 +3,7 @@ package com.seldon.news.screens.menu.ui;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Color;
+import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,8 @@ import com.seldon.news.common.rubrics.data.RubricEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.R.attr.type;
 
 public class MenuViewModel {
     /**
@@ -71,6 +74,56 @@ public class MenuViewModel {
         items.add(new MenuSpinnerItem(context.getString(userRubricsTitleResId)));
         putAllRubrics(items, userRubrics);
         return new MenuSpinnerAdapter(context, items);
+    }
+
+    public RecyclerView.Adapter getRecyclerAdapter(Context context) {
+        List<MenuSpinnerItem> items = new ArrayList<>();
+        items.add(new MenuSpinnerItem(context.getString(homeTitleResId), homeClickListener));
+        items.add(new MenuSpinnerItem(context.getString(allRubricsTitleResId)));
+        putAllRubrics(items, allRubrics);
+        items.add(new MenuSpinnerItem(context.getString(userRubricsTitleResId)));
+        putAllRubrics(items, userRubrics);
+        return new MenuRecyclerAdapter(context, items);
+    }
+
+    public class MenuRecyclerAdapter extends RecyclerView.Adapter {
+
+        private final int TYPE_SIMPLE = R.layout.menu_spinner_simple_item;
+        private final int TYPE_HEADER = R.layout.menu_spinner_header_item;
+
+        private Context context;
+        private List<MenuSpinnerItem> items;
+
+        public MenuRecyclerAdapter(Context context, List<MenuSpinnerItem> items) {
+            this.context = context;
+            this.items = items;
+        }
+
+        @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new RecyclerView.ViewHolder(LayoutInflater.from(context).inflate(viewType, parent, false)){};
+        }
+
+        @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            TextView tv = (TextView) holder.itemView;
+            MenuSpinnerItem item = getItem(position);
+            tv.setText(item.getTitle());
+        }
+
+        @Override public int getItemCount() {
+            return items.size();
+        }
+
+        public MenuSpinnerItem getItem(int position) {
+            return items.get(position);
+        }
+
+        @Override public int getItemViewType(int position) {
+            MenuSpinnerItem item = getItem(position);
+            if (item.isHeader()) {
+                return TYPE_HEADER;
+            }
+            return TYPE_SIMPLE;
+        }
     }
 
     public class MenuSpinnerAdapter implements SpinnerAdapter {
