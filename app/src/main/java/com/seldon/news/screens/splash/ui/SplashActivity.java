@@ -12,6 +12,14 @@ import com.seldon.news.screens.splash.di.SplashUIModule;
 
 import javax.inject.Inject;
 
+import fw.v6.core.utils.V6DebugLogger;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
+
 public class SplashActivity extends AppCompatActivity implements SplashView {
 
     @Inject

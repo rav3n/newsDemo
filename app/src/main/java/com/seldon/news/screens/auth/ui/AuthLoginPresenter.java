@@ -9,6 +9,7 @@ import com.seldon.news.screens.auth.domain.AuthLoginInteractor;
 
 import fw.v6.core.domain.V6BasePresenter;
 import rx.Observable;
+import rx.Scheduler;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.functions.Action0;
@@ -23,6 +24,8 @@ public class AuthLoginPresenter extends V6BasePresenter<AuthView, AuthRouter> {
     private AuthLoginInteractor interactor;
     private Observable<AuthRequestEntity> observableRequest;
     private UserInteractor userInteractor;
+    private Scheduler io;
+    private Scheduler ui;
 
     private boolean dataValid = true;
 
@@ -30,11 +33,15 @@ public class AuthLoginPresenter extends V6BasePresenter<AuthView, AuthRouter> {
                               @Nullable AuthRouter router,
                               AuthLoginInteractor interactor,
                               Observable<AuthRequestEntity> observableRequest,
-                              UserInteractor userInteractor) {
+                              UserInteractor userInteractor,
+                              Scheduler io,
+                              Scheduler ui) {
         super(authView, router);
         this.interactor = interactor;
         this.observableRequest = observableRequest;
         this.userInteractor = userInteractor;
+        this.io = io;
+        this.ui = ui;
     }
 
     public void send() {
@@ -46,6 +53,7 @@ public class AuthLoginPresenter extends V6BasePresenter<AuthView, AuthRouter> {
 
     private void tryLogin() {
         registerSubscription(observableRequest
+                .observeOn(io)
                 .flatMap(new Func1<AuthRequestEntity, Observable<AuthResponseEntity>>() {
                     @Override public Observable<AuthResponseEntity> call(AuthRequestEntity requestEntity) {
                         return interactor.getResponse(requestEntity);
@@ -56,6 +64,8 @@ public class AuthLoginPresenter extends V6BasePresenter<AuthView, AuthRouter> {
                         getView().enableProgressDialog(true);
                     }
                 })
+                .observeOn(ui)
+                .subscribeOn(ui)
                 .subscribe(new Subscriber<AuthResponseEntity>() {
                     @Override public void onCompleted() {}
 
