@@ -9,7 +9,6 @@ import com.seldon.news.screens.auth.domain.AuthLoginInteractor;
 
 import fw.v6.core.domain.V6BasePresenter;
 import rx.Observable;
-import rx.Scheduler;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.functions.Action0;
@@ -24,7 +23,6 @@ public class AuthLoginPresenter extends V6BasePresenter<AuthView, AuthRouter> {
     private AuthLoginInteractor interactor;
     private Observable<AuthRequestEntity> observableRequest;
     private UserInteractor userInteractor;
-    private Scheduler ui;
 
     private boolean dataValid = true;
 
@@ -32,11 +30,9 @@ public class AuthLoginPresenter extends V6BasePresenter<AuthView, AuthRouter> {
                               @Nullable AuthRouter router,
                               AuthLoginInteractor interactor,
                               Observable<AuthRequestEntity> observableRequest,
-                              UserInteractor userInteractor,
-                              Scheduler ui) {
+                              UserInteractor userInteractor) {
         super(authView, router);
         this.interactor = interactor;
-        this.ui = ui;
         this.observableRequest = observableRequest;
         this.userInteractor = userInteractor;
     }
@@ -60,7 +56,6 @@ public class AuthLoginPresenter extends V6BasePresenter<AuthView, AuthRouter> {
                         getView().enableProgressDialog(true);
                     }
                 })
-                .observeOn(ui)
                 .subscribe(new Subscriber<AuthResponseEntity>() {
                     @Override public void onCompleted() {}
 

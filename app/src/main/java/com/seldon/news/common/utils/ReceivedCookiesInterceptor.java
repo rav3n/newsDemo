@@ -18,6 +18,7 @@ public class ReceivedCookiesInterceptor implements Interceptor {
     }
 
     @Override public Response intercept(Chain chain) throws IOException {
+        V6DebugLogger.e(Thread.currentThread().getName() + " RECEIVED RESPONSE");
         Response response = chain.proceed(chain.request());
         if (!response.headers("Set-Cookie").isEmpty()) {
             HashSet<String> cookie = new HashSet<>();

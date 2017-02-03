@@ -1,9 +1,5 @@
 package com.seldon.news.screens.menu.di;
 
-import com.seldon.news.common.app.di.ApplicationDomainModule;
-import com.seldon.news.common.base.data.NewsResponse;
-import com.seldon.news.common.rubrics.data.ApiRubricsProvider;
-import com.seldon.news.common.rubrics.data.RubricEntity;
 import com.seldon.news.common.rubrics.domain.RubricsInteractor;
 import com.seldon.news.screens.menu.domain.MenuRubricsPresenter;
 import com.seldon.news.screens.menu.ui.MenuRouter;
@@ -13,7 +9,6 @@ import javax.inject.Named;
 
 import dagger.Module;
 import dagger.Provides;
-import rx.Observable;
 import rx.Scheduler;
 
 import static com.seldon.news.common.app.di.ApplicationDomainModule.APP_DOMAIN_IO;
