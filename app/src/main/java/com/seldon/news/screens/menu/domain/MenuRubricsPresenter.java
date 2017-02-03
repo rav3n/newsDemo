@@ -42,16 +42,10 @@ public class MenuRubricsPresenter extends V6BasePresenter<MenuView, MenuRouter> 
     }
 
     public void loadAllRubrics() {
-        registerSubscription(Observable.combineLatest(
-                rubricsInteractor.fetchRubrics(),
-                rubricsInteractor.fetchCustomUserRubrics(),
-                new Func2<RubricEntity[], RubricEntity[], AllRubricsModel>() {
-                    @Override public AllRubricsModel call(RubricEntity[] allRubrics, RubricEntity[] userRubrics) {
-                        return new AllRubricsModel(allRubrics, userRubrics);
-                    }
-            })
-            .observeOn(io)
-            .subscribeOn(ui)
+        registerSubscription(
+            allRubricsModelObservable()
+            .subscribeOn(io)
+            .observeOn(ui)
             .subscribe(new Subscriber<AllRubricsModel>() {
                 @Override public void onCompleted() {}
                 @Override public void onError(Throwable e) {
@@ -64,6 +58,17 @@ public class MenuRubricsPresenter extends V6BasePresenter<MenuView, MenuRouter> 
                 }
             })
         );
+    }
+
+    private Observable<AllRubricsModel> allRubricsModelObservable() {
+        return Observable.combineLatest(
+                rubricsInteractor.fetchRubrics(),
+                rubricsInteractor.fetchCustomUserRubrics(),
+                new Func2<RubricEntity[], RubricEntity[], AllRubricsModel>() {
+                    @Override public AllRubricsModel call(RubricEntity[] allRubrics, RubricEntity[] userRubrics) {
+                        return new AllRubricsModel(allRubrics, userRubrics);
+                    }
+            });
     }
 
     private void registerSubscription(Subscription subscription) {

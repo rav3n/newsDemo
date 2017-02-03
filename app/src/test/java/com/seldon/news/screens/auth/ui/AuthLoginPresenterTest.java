@@ -9,8 +9,6 @@ import com.seldon.news.screens.auth.domain.AuthLoginInteractor;
 import org.junit.Test;
 
 import rx.Observable;
-import rx.Scheduler;
-import rx.schedulers.Schedulers;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -23,7 +21,6 @@ public class AuthLoginPresenterTest {
         /**
          * мокаем сущности
          */
-        Scheduler scheduler = Schedulers.immediate();
         AuthView view = mock(AuthView.class);
         AuthRouter router = mock(AuthRouter.class);
         AuthLoginInteractor interactor = mock(AuthLoginInteractor.class);
@@ -32,7 +29,7 @@ public class AuthLoginPresenterTest {
 
         when(interactor.getResponse((AuthRequestEntity) any())).thenReturn(Observable.just(mock(AuthResponseEntity.class)));
 
-        AuthLoginPresenter presenter = new AuthLoginPresenter(view, router, interactor,  observable, userInteractor, scheduler);
+        AuthLoginPresenter presenter = new AuthLoginPresenter(view, router, interactor,  observable, userInteractor);
         presenter.send();
 
         /**
@@ -45,7 +42,6 @@ public class AuthLoginPresenterTest {
     }
 
     @Test public void sendErrorTest() {
-        Scheduler scheduler = Schedulers.immediate();
         AuthView view = mock(AuthView.class);
         AuthRouter router = mock(AuthRouter.class);
         AuthLoginInteractor interactor = mock(AuthLoginInteractor.class);
@@ -54,7 +50,7 @@ public class AuthLoginPresenterTest {
 
         when(interactor.getResponse((AuthRequestEntity) any())).thenReturn(Observable.<AuthResponseEntity>error(new NewsException(0, "")));
 
-        AuthLoginPresenter presenter = new AuthLoginPresenter(view, router, interactor, observable, userInteractor, scheduler);
+        AuthLoginPresenter presenter = new AuthLoginPresenter(view, router, interactor, observable, userInteractor);
         presenter.send();
 
         /**

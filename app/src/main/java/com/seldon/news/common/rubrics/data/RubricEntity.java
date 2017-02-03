@@ -1,6 +1,7 @@
 package com.seldon.news.common.rubrics.data;
 
 public class RubricEntity {
+
     private long id;
     private String name;
 

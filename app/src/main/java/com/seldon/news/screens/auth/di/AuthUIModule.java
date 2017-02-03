@@ -70,9 +70,8 @@ public class AuthUIModule {
             AuthRouter router,
             AuthLoginInteractor interactor,
             Observable<AuthRequestEntity> observable,
-            UserInteractor userInteractor,
-            @Named(APP_DOMAIN_UI) Scheduler ui) {
-        return new AuthLoginPresenter(view, router, interactor, observable, userInteractor, ui);
+            UserInteractor userInteractor) {
+        return new AuthLoginPresenter(view, router, interactor, observable, userInteractor);
     }
 
     @Provides public Observable<AuthRequestEntity> provideObservableRequest(
@@ -84,8 +83,8 @@ public class AuthUIModule {
         return Observable.combineLatest(RxTextView.textChanges(name),
                                         RxTextView.textChanges(password),
                                         dataToRequestMapper)
-                .subscribeOn(ui)
-                .observeOn(io);
+                .subscribeOn(io)
+                .observeOn(ui);
     }
 
     @Provides public AuthDataToRequestMapper provideRequestToResponseMapper() {

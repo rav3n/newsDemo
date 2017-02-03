@@ -27,6 +27,7 @@ public class AddCookiesInterceptor implements Interceptor {
                 V6DebugLogger.d("Adding Header: " + data);
             }
         }
-        return chain.proceed(builder.build());
+        Response response = chain.proceed(builder.build());
+        return response;
     }
 }
