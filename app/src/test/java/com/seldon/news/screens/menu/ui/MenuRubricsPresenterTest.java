@@ -1,7 +1,5 @@
 package com.seldon.news.screens.menu.ui;
 
-import android.widget.SpinnerAdapter;
-
 import com.seldon.news.common.base.data.NewsException;
 import com.seldon.news.common.rubrics.data.RubricEntity;
 import com.seldon.news.common.rubrics.domain.RubricsInteractor;
@@ -31,7 +29,7 @@ public class MenuRubricsPresenterTest {
 
         MenuRubricsPresenter presenter = new MenuRubricsPresenter(view, router, scheduler, scheduler, interactor);
         presenter.loadAllRubrics();
-        verify(view).showMenuSpinner((MenuViewModel) any());
+        verify(view).showMenuSpinner((RubricsViewModel) any());
     }
 
     @Test public void loadAllRubricsErrorTest() {

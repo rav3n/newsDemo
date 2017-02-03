@@ -16,7 +16,7 @@ import com.seldon.news.R;
 
 public class RubricsBuilder {
     public static Dialog showDialog(Context context,
-                                    MenuViewModel viewModel) {
+                                    RubricsViewModel viewModel) {
         Dialog dialog = new Dialog(context);
 //        Dialog dialog = new Dialog(context, R.style.Style);
         dialog.setContentView(createView(context, viewModel));
@@ -32,7 +32,7 @@ public class RubricsBuilder {
         return dialog;
     }
 
-    private static View createView(Context context, MenuViewModel menuViewModel) {
+    private static View createView(Context context, RubricsViewModel menuViewModel) {
         View view = LayoutInflater.from(context).inflate(R.layout.menu_rubrics_view, null);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.menu_rubrics_recyler);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));

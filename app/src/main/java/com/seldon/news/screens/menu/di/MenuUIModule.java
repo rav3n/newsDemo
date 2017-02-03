@@ -1,5 +1,6 @@
 package com.seldon.news.screens.menu.di;
 
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.webkit.WebView;
 
@@ -25,6 +26,9 @@ public class MenuUIModule {
     @BindView(R.id.content_menu_bottom_navigation)
     protected BottomNavigationView navigationMenu;
 
+    @BindView(R.id.content_menu_view_pager)
+    protected ViewPager viewPager;
+
     public MenuUIModule(View viewContainer, MenuView viewInterface, MenuRouter routerInterface) {
         this.viewInterface = viewInterface;
         this.routerInterface = routerInterface;
@@ -46,5 +50,9 @@ public class MenuUIModule {
 
     @Provides WebView provideWebView() {
         return webView;
+    }
+
+    @Provides ViewPager provideViewPager() {
+        return viewPager;
     }
 }

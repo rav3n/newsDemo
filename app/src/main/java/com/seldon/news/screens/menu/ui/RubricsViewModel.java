@@ -19,7 +19,7 @@ import java.util.List;
 
 import static android.R.attr.type;
 
-public class MenuViewModel {
+public class RubricsViewModel {
     /**
     - Главная
     - "Рубрики" (просто тайтл)
@@ -38,13 +38,13 @@ public class MenuViewModel {
     private View.OnClickListener homeClickListener;
     private View.OnClickListener rubricsClickListener;
 
-    public MenuViewModel(int homeTitleResId,
-                         int allRubricsTitleResId,
-                         int userRubricsTitleResId,
-                         RubricEntity[] allRubrics,
-                         RubricEntity[] userRubrics,
-                         View.OnClickListener homeClickListener,
-                         View.OnClickListener rubricsClickListener) {
+    public RubricsViewModel(int homeTitleResId,
+                            int allRubricsTitleResId,
+                            int userRubricsTitleResId,
+                            RubricEntity[] allRubrics,
+                            RubricEntity[] userRubrics,
+                            View.OnClickListener homeClickListener,
+                            View.OnClickListener rubricsClickListener) {
         this.homeTitleResId = homeTitleResId;
         this.allRubricsTitleResId = allRubricsTitleResId;
         this.userRubricsTitleResId = userRubricsTitleResId;
