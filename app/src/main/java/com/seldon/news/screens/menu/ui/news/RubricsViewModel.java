@@ -17,11 +17,14 @@ import java.util.List;
 public class RubricsViewModel {
 
     private AllRubricsModel model;
+
     private RubricSelectListener clickListener;
     private RecyclerView.Adapter adapter;
     private List<RecyclerItem> items;
+    private boolean subMenu;
 
-    public RubricsViewModel(AllRubricsModel model, RubricSelectListener clickListener) {
+    public RubricsViewModel(AllRubricsModel model,
+                            RubricSelectListener clickListener) {
         this.model = model;
         this.clickListener = clickListener;
     }
@@ -33,49 +36,49 @@ public class RubricsViewModel {
         return adapter;
     }
 
+    private RecyclerItem createRubricItem(final RubricEntity rubric) {
+        return new RecyclerItem(rubric.getName(), TYPE_RUBRIC, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickListener.onRubricSelect(rubric);
+            }
+        });
+    }
+
     private void showMain(final Context context) {
         items.clear();
-        items.add(new RecyclerItem(context.getString(R.string.rubrics_to_read), TYPE_RUBRIC, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                clickListener.onFutureReadSelect();
-            }
-        }));
-        items.add(new RecyclerItem(context.getString(R.string.rubrics_favorite), TYPE_RUBRIC, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                clickListener.onFavoritesSelect();
-            }
-        }));
+        items.add(createRubricItem(model.getReadInFutureRubric()));
+        items.add(createRubricItem(model.getFavoritesRubric()));
         items.add(new RecyclerItem(context.getString(R.string.rubrics_custom), TYPE_SUB, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showSub(context);
+                subMenu = true;
                 adapter.notifyDataSetChanged();
             }
         }));
         items.add(new RecyclerItem(context.getString(R.string.rubrics_general), TYPE_HEADER, null));
-        for (final RubricEntity rubric : model.generalRubrics) {
-            items.add(new RecyclerItem(rubric.getName(), TYPE_RUBRIC, new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    clickListener.onRubricSelect(rubric);
-                }
-            }));
+        for (RubricEntity rubric : model.getGeneralRubrics()) {
+            items.add(createRubricItem(rubric));
         }
     }
 
     private void showSub(Context context) {
         items.clear();
         items.add(new RecyclerItem(context.getString(R.string.rubrics_custom), TYPE_HEADER, null));
-        for (final RubricEntity rubric : model.userRubrics) {
-            items.add(new RecyclerItem(rubric.getName(), TYPE_RUBRIC, new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    clickListener.onRubricSelect(rubric);
-                }
-            }));
+        for (RubricEntity rubric : model.getUserRubrics()) {
+            items.add(createRubricItem(rubric));
         }
+    }
+
+    boolean onBackPressed(Context context) {
+        if (subMenu) {
+            showMain(context);
+            adapter.notifyDataSetChanged();
+            subMenu = false;
+            return true;
+        }
+        return false;
     }
 
     private static final int TYPE_RUBRIC = R.layout.menu_rubrics_dialog_item_rubric;

@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.seldon.news.R;
 import com.seldon.news.common.Const;
 import com.seldon.news.common.app.NewsApplication;
+import com.seldon.news.common.rubrics.data.RubricEntity;
 import com.seldon.news.common.views.BottomNavigationView;
 import com.seldon.news.screens.menu.data.AllRubricsModel;
 import com.seldon.news.screens.menu.di.DaggerMenuComponent;
@@ -93,6 +94,8 @@ public class MenuFragment extends Fragment implements MenuView {
 
     @Override public void onRubricsLoaded(AllRubricsModel model) {
         this.rubricsModel = model;
+        rubricsModel.setFavoritesRubric(new RubricEntity(Constants.RUBRIC_FAVORITES, getString(R.string.rubrics_favorite)));
+        rubricsModel.setReadInFutureRubric(new RubricEntity(Constants.RUBRIC_READ_IN_FUTURE, getString(R.string.rubrics_to_read)));
         initNavigation();
     }
 

@@ -2,11 +2,13 @@ package com.seldon.news.screens.menu.ui.news;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -16,19 +18,24 @@ import com.seldon.news.R;
 
 public class RubricsBuilder {
 
-    public static Dialog showDialog(Context context,
-                                    RubricsViewModel viewModel) {
+    public static Dialog showDialog(final Context context, final RubricsViewModel viewModel) {
         Dialog dialog = new Dialog(context, R.style.FullScreenDialog);
-//        Dialog dialog = new Dialog(context, R.style.Style);
         dialog.setContentView(createView(context, viewModel));
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//        View applyButton = filterView.findViewById(R.id.card_filter_dialog_apply);
-//        applyButton.setOnClickListener(v -> {
-//            dialog.dismiss();
-//            onApply.onClick(v);
-//        });
-
         initLayoutParams(dialog);
+
+        dialog.setOnKeyListener(new Dialog.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface arg0, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    if (viewModel.onBackPressed(context)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+
         dialog.show();
         return dialog;
     }
