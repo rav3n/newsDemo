@@ -11,21 +11,22 @@
         android:supportsRtl="true"
         android:name=".common.app.NewsApplication"
         android:theme="@style/NewsTheme">
+
         <activity
             android:name=".screens.splash.ui.SplashActivity">
-        </activity>
-        <activity
-            android:name=".screens.menu.ui.MenuActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:label="@string/title_activity_menu">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".screens.menu.ui.MenuActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+        </activity>
+
         <activity
             android:name=".screens.auth.ui.AuthorizationActivity"
-            android:label="@string/title_activity_menu"
             android:windowSoftInputMode="adjustResize"/>
     </application>
 

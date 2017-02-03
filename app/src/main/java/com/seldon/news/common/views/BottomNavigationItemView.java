@@ -27,7 +27,7 @@ public class BottomNavigationItemView extends FrameLayout {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.NavigationItem);
         try {
             title.setText(a.getString(R.styleable.NavigationItem_title));
-            icon.setImageDrawable(a.getDrawable(R.styleable.NavigationItem_icon));
+            icon.setImageResource(a.getResourceId(R.styleable.NavigationItem_icon, 0));
         } finally {
             a.recycle();
         }

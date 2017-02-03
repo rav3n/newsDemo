@@ -13,6 +13,13 @@
     <string name="menu_search">Поиск</string>
     <string name="menu_user">Аккаунт</string>
 
+    <string name="rubrics_title">Рубрики</string>
+    <string name="rubrics_main">Главная</string>
+    <string name="rubrics_to_read">К прочтению</string>
+    <string name="rubrics_favorite">Избранное</string>
+    <string name="rubrics_custom">Мои рубрики</string>
+    <string name="rubrics_general">Рубрики Seldon.News</string>
+
     <string name="menu_spinner_home">Главная</string>
     <string name="menu_spinner_all_rubrics">Рубрики</string>
     <string name="menu_spinner_user_rubrics">Пользовательские</string>
