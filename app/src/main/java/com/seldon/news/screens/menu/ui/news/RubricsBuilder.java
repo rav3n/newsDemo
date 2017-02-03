@@ -1,4 +1,4 @@
-package com.seldon.news.screens.menu.ui;
+package com.seldon.news.screens.menu.ui.news;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -13,6 +13,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.seldon.news.R;
+import com.seldon.news.screens.menu.ui.news.RubricsViewModel;
 
 public class RubricsBuilder {
     public static Dialog showDialog(Context context,

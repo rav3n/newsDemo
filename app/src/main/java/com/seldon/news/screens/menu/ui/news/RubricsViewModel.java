@@ -1,4 +1,4 @@
-package com.seldon.news.screens.menu.ui;
+package com.seldon.news.screens.menu.ui.news;
 
 import android.content.Context;
 import android.database.DataSetObserver;
@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.seldon.news.R;
 import com.seldon.news.common.rubrics.data.RubricEntity;
+import com.seldon.news.screens.menu.ui.MenuSpinnerItem;
 
 import java.util.ArrayList;
 import java.util.List;
