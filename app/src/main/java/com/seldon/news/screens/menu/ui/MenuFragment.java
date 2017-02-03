@@ -18,7 +18,9 @@ import android.widget.Toast;
 import com.seldon.news.R;
 import com.seldon.news.common.Const;
 import com.seldon.news.common.app.NewsApplication;
+import com.seldon.news.common.rubrics.data.RubricEntity;
 import com.seldon.news.common.views.BottomNavigationView;
+import com.seldon.news.screens.menu.data.AllRubricsModel;
 import com.seldon.news.screens.menu.di.DaggerMenuComponent;
 import com.seldon.news.screens.menu.di.MenuUIModule;
 import com.seldon.news.screens.menu.domain.MenuRubricsPresenter;
@@ -28,13 +30,22 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import fw.v6.core.utils.V6DebugLogger;
+
 public class MenuFragment extends Fragment implements MenuView {
 
     @Inject
     protected WebView webView;
+    @Inject
+    BottomNavigationView navigationView;
+    @Inject
+    ViewPager viewPager;
 
     @Inject
     protected MenuRubricsPresenter rubricsPresenter;
+
+    private AllRubricsModel rubricsModel;
+    private List<MenuPage> pages = new ArrayList<>();
 
     @Nullable @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,6 +64,14 @@ public class MenuFragment extends Fragment implements MenuView {
         rubricsPresenter.onDestroy();
     }
 
+    private void inject() {
+        DaggerMenuComponent.builder()
+                .applicationComponent(NewsApplication.getComponent())
+                .menuUIModule(new MenuUIModule(getView(), this, new MenuRouter(getActivity())))
+                .build()
+                .inject(this);
+    }
+
     private void initWeb() {
         CookieManager cookieManager = CookieManager.getInstance();
         cookieManager.setAcceptCookie(true);
@@ -67,25 +86,11 @@ public class MenuFragment extends Fragment implements MenuView {
         webView.loadUrl(Const.SERVER_URL);
     }
 
-    private void inject() {
-        DaggerMenuComponent.builder()
-                .applicationComponent(NewsApplication.getComponent())
-                .menuUIModule(new MenuUIModule(getView(), this, new MenuRouter(getActivity())))
-                .build()
-                .inject(this);
-    }
-
     @Override public void showPage(String url) {
         webView.loadUrl(url);
     }
 
-    private TextView createTemp(String s) {
-        TextView tv = new TextView(getActivity());
-        tv.setText(s);
-        return tv;
-    }
-
-    private View firstView(String s, final MenuViewModel viewModel) {
+    private View firstView(String s, final RubricsViewModel viewModel) {
         TextView tv = new TextView(getActivity());
         tv.setText(s);
         tv.setOnClickListener(new View.OnClickListener() {
@@ -96,16 +101,25 @@ public class MenuFragment extends Fragment implements MenuView {
         return tv;
     }
 
-    @Override public void showMenuSpinner(MenuViewModel viewModel) {
-        final ViewPager pager = (ViewPager) getView().findViewById(R.id.content_menu_view_pager);
-        final List<View> views = new ArrayList<>();
-        views.add(firstView("home", viewModel));
-        views.add(createTemp("search view"));
-        views.add(createTemp("profile view"));
-        pager.setAdapter(new PagerAdapter() {
+    @Override public void onRubricsLoaded(AllRubricsModel model) {
+        this.rubricsModel = model;
+        initNavigation();
+    }
+
+    @Override public void showError(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+    }
+
+    private void initNavigation() {
+        pages.clear();
+        pages.add(new NewsPage());
+        pages.add(new SearchPage());
+        pages.add(new ProfilePage());
+
+        viewPager.setAdapter(new PagerAdapter() {
 
             @Override public Object instantiateItem(ViewGroup container, int position) {
-                View view = views.get(position);
+                View view = pages.get(position).getPagerView();
                 container.addView(view);
                 return view;
             }
@@ -115,29 +129,14 @@ public class MenuFragment extends Fragment implements MenuView {
             }
 
             @Override public int getCount() {
-                return views.size();
+                return pages.size();
             }
 
             @Override public boolean isViewFromObject(View view, Object object) {
                 return view.equals(object);
             }
         });
-        BottomNavigationView navigationView = (BottomNavigationView) getView().findViewById(R.id.content_menu_bottom_navigation);
-        navigationView.setOnItemClickListener(new BottomNavigationView.NewsBottomNavigationListener() {
-            @Override public void onItemClickListener(View item) {
-                switch (item.getId()) {
-                    case R.id.bottom_navigation_home:
-                        pager.setCurrentItem(0, false);
-                        break;
-                    case R.id.bottom_navigation_search:
-                        pager.setCurrentItem(1, false);
-                        break;
-                    case R.id.bottom_navigation_profile:
-                        pager.setCurrentItem(2, false);
-                        break;
-                }
-            }
-        });
+
         /*
         Spinner spinner = (Spinner) getActivity().findViewById(R.id.toolbar_new_spinner);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -157,9 +156,92 @@ public class MenuFragment extends Fragment implements MenuView {
         });
         spinner.setAdapter(viewModel.getSpinnerAdapter(getActivity()));
         */
+
+        navigationView.setOnItemClickListener(new BottomNavigationView.NewsBottomNavigationListener() {
+            @Override public void onItemClickListener(View item) {
+                switch (item.getId()) {
+                    case R.id.bottom_navigation_home:
+                        setCurrentTab(0);
+                        break;
+                    case R.id.bottom_navigation_search:
+                        setCurrentTab(1);
+                        break;
+                    case R.id.bottom_navigation_profile:
+                        setCurrentTab(2);
+                        break;
+                }
+            }
+        });
     }
 
-    @Override public void showError(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+    private void setCurrentTab(int index) {
+        viewPager.setCurrentItem(index, false);
+    }
+
+    abstract class MenuPage {
+
+        View pagerView;
+
+        View getPagerView() {
+            if (pagerView == null) {
+                pagerView = createPagerView();
+            }
+            return pagerView;
+        }
+
+        abstract View createPagerView();
+    }
+
+    class NewsPage extends MenuPage {
+
+        @Override
+        View createPagerView() {
+            final RubricsViewModel viewModel = new RubricsViewModel(
+                    R.string.menu_spinner_home,
+                    R.string.menu_spinner_all_rubrics,
+                    R.string.menu_spinner_user_rubrics,
+                    rubricsModel.generalRubrics,
+                    rubricsModel.userRubrics,
+                    new View.OnClickListener() {
+                        @Override public void onClick(View v) {
+                            V6DebugLogger.d("go to home");
+                        }
+                    },
+                    new View.OnClickListener() {
+                        @Override public void onClick(View v) {
+                            RubricEntity entity = (RubricEntity) v.getTag();
+                            V6DebugLogger.d("go to " + entity.getName());
+                        }
+                    });
+
+            TextView tv = new TextView(getActivity());
+            tv.setText("news view");
+            tv.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    RubricsBuilder.showDialog(getActivity(), viewModel);
+                }
+            });
+            return tv;
+        }
+    }
+
+    class SearchPage extends MenuPage {
+
+        @Override
+        View createPagerView() {
+            TextView tv = new TextView(getActivity());
+            tv.setText("search view");
+            return tv;
+        }
+    }
+
+    class ProfilePage extends MenuPage {
+
+        @Override
+        View createPagerView() {
+            TextView tv = new TextView(getActivity());
+            tv.setText("profile view");
+            return tv;
+        }
     }
 }
