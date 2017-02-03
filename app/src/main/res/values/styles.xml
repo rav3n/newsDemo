@@ -15,4 +15,8 @@
         <item name="android:textColorHint">@color/auth_text_hint</item>
         <item name="android:textSize">@dimen/auth_text_size</item>
     </style>
+
+    <style name="FullScreenDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowNoTitle">true</item>
+    </style>
 </resources>

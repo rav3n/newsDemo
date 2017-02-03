@@ -18,4 +18,8 @@ public abstract class MenuPage {
     }
 
     protected abstract View createPagerView();
+
+    public boolean overrideDeviceBack() {
+        return false;
+    }
 }

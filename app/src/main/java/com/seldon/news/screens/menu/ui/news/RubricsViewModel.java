@@ -1,196 +1,144 @@
 package com.seldon.news.screens.menu.ui.news;
 
 import android.content.Context;
-import android.database.DataSetObserver;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.seldon.news.R;
 import com.seldon.news.common.rubrics.data.RubricEntity;
-import com.seldon.news.screens.menu.ui.MenuSpinnerItem;
+import com.seldon.news.screens.menu.data.AllRubricsModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.R.attr.type;
-
 public class RubricsViewModel {
-    /**
-    - Главная
-    - "Рубрики" (просто тайтл)
-            - <общие рубрики>
-    - "Пользовательские" (просто тайтл)
-            - <пользовательские рубрики>
-    */
 
-    private int homeTitleResId;
-    private int allRubricsTitleResId;
-    private int userRubricsTitleResId;
+    private AllRubricsModel model;
+    private RubricSelectListener clickListener;
+    private RecyclerView.Adapter adapter;
+    private List<RecyclerItem> items;
 
-    private RubricEntity[] allRubrics;
-    private RubricEntity[] userRubrics;
-
-    private View.OnClickListener homeClickListener;
-    private View.OnClickListener rubricsClickListener;
-
-    public RubricsViewModel(int homeTitleResId,
-                            int allRubricsTitleResId,
-                            int userRubricsTitleResId,
-                            RubricEntity[] allRubrics,
-                            RubricEntity[] userRubrics,
-                            View.OnClickListener homeClickListener,
-                            View.OnClickListener rubricsClickListener) {
-        this.homeTitleResId = homeTitleResId;
-        this.allRubricsTitleResId = allRubricsTitleResId;
-        this.userRubricsTitleResId = userRubricsTitleResId;
-        this.allRubrics = allRubrics;
-        this.userRubrics = userRubrics;
-        this.homeClickListener = homeClickListener;
-        this.rubricsClickListener = rubricsClickListener;
+    public RubricsViewModel(AllRubricsModel model, RubricSelectListener clickListener) {
+        this.model = model;
+        this.clickListener = clickListener;
     }
 
-    private void putAllRubrics(List<MenuSpinnerItem> items, RubricEntity[] rubricEntities) {
-        for(int i = 0; i < rubricEntities.length; i++) {
-            final RubricEntity entity = rubricEntities[i];
-            items.add(new MenuSpinnerItem(entity.getName(), new View.OnClickListener() {
-                @Override public void onClick(View v) {
-                    v.setTag(entity);
-                    rubricsClickListener.onClick(v);
+    public RecyclerView.Adapter getRecyclerAdapter(Context context) {
+        items = new ArrayList<>();
+        showMain(context);
+        adapter = new MenuRecyclerAdapter(context, items);
+        return adapter;
+    }
+
+    private void showMain(final Context context) {
+        items.clear();
+        items.add(new RecyclerItem(context.getString(R.string.rubrics_to_read), TYPE_RUBRIC, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickListener.onFutureReadSelect();
+            }
+        }));
+        items.add(new RecyclerItem(context.getString(R.string.rubrics_favorite), TYPE_RUBRIC, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickListener.onFavoritesSelect();
+            }
+        }));
+        items.add(new RecyclerItem(context.getString(R.string.rubrics_custom), TYPE_SUB, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showSub(context);
+                adapter.notifyDataSetChanged();
+            }
+        }));
+        items.add(new RecyclerItem(context.getString(R.string.rubrics_general), TYPE_HEADER, null));
+        for (final RubricEntity rubric : model.generalRubrics) {
+            items.add(new RecyclerItem(rubric.getName(), TYPE_RUBRIC, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    clickListener.onRubricSelect(rubric);
                 }
             }));
         }
     }
 
-    public SpinnerAdapter getSpinnerAdapter(Context context) {
-        List<MenuSpinnerItem> items = new ArrayList<>();
-        items.add(new MenuSpinnerItem(context.getString(homeTitleResId), homeClickListener));
-        items.add(new MenuSpinnerItem(context.getString(allRubricsTitleResId)));
-        putAllRubrics(items, allRubrics);
-        items.add(new MenuSpinnerItem(context.getString(userRubricsTitleResId)));
-        putAllRubrics(items, userRubrics);
-        return new MenuSpinnerAdapter(context, items);
+    private void showSub(Context context) {
+        items.clear();
+        items.add(new RecyclerItem(context.getString(R.string.rubrics_custom), TYPE_HEADER, null));
+        for (final RubricEntity rubric : model.userRubrics) {
+            items.add(new RecyclerItem(rubric.getName(), TYPE_RUBRIC, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    clickListener.onRubricSelect(rubric);
+                }
+            }));
+        }
     }
 
-    public RecyclerView.Adapter getRecyclerAdapter(Context context) {
-        List<MenuSpinnerItem> items = new ArrayList<>();
-        items.add(new MenuSpinnerItem(context.getString(homeTitleResId), homeClickListener));
-        items.add(new MenuSpinnerItem(context.getString(allRubricsTitleResId)));
-        putAllRubrics(items, allRubrics);
-        items.add(new MenuSpinnerItem(context.getString(userRubricsTitleResId)));
-        putAllRubrics(items, userRubrics);
-        return new MenuRecyclerAdapter(context, items);
-    }
+    private static final int TYPE_RUBRIC = R.layout.menu_rubrics_dialog_item_rubric;
+    private static final int TYPE_SUB = R.layout.menu_rubrics_dialog_item_sub;
+    private static final int TYPE_HEADER = R.layout.menu_rubrics_dialog_item_header;
 
-    public class MenuRecyclerAdapter extends RecyclerView.Adapter {
-
-        private final int TYPE_SIMPLE = R.layout.menu_spinner_simple_item;
-        private final int TYPE_HEADER = R.layout.menu_spinner_header_item;
+    private class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
 
         private Context context;
-        private List<MenuSpinnerItem> items;
+        private List<RecyclerItem> items;
 
-        public MenuRecyclerAdapter(Context context, List<MenuSpinnerItem> items) {
+        MenuRecyclerAdapter(Context context, List<RecyclerItem> items) {
             this.context = context;
             this.items = items;
         }
 
-        @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new RecyclerView.ViewHolder(LayoutInflater.from(context).inflate(viewType, parent, false)){};
+        @Override public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new RecyclerViewHolder(LayoutInflater.from(context).inflate(viewType, parent, false)){};
         }
 
-        @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            TextView tv = (TextView) holder.itemView;
-            MenuSpinnerItem item = getItem(position);
-            tv.setText(item.getTitle());
+        @Override public void onBindViewHolder(RecyclerViewHolder holder, int position) {
+            final RecyclerItem item = getItem(position);
+            holder.setTitle(item.title);
+            holder.itemView.setOnClickListener(item.listener);
         }
 
         @Override public int getItemCount() {
             return items.size();
         }
 
-        public MenuSpinnerItem getItem(int position) {
+        public RecyclerItem getItem(int position) {
             return items.get(position);
         }
 
         @Override public int getItemViewType(int position) {
-            MenuSpinnerItem item = getItem(position);
-            if (item.isHeader()) {
-                return TYPE_HEADER;
-            }
-            return TYPE_SIMPLE;
+            return getItem(position).type;
         }
     }
 
-    public class MenuSpinnerAdapter implements SpinnerAdapter {
+    private class RecyclerItem {
 
-        private final int TYPE_SIMPLE = R.layout.menu_spinner_simple_item;
-        private final int TYPE_HEADER = R.layout.menu_spinner_header_item;
+        final String title;
+        final int type;
+        final View.OnClickListener listener;
 
-        private Context context;
-        private List<MenuSpinnerItem> items;
+        RecyclerItem(String title, int type, View.OnClickListener listener) {
+            this.title = title;
+            this.type = type;
+            this.listener = listener;
+        }
+    }
 
-        public MenuSpinnerAdapter(Context context, List<MenuSpinnerItem> items) {
-            this.context = context;
-            this.items = items;
+    private class RecyclerViewHolder extends RecyclerView.ViewHolder {
+
+        TextView title;
+
+        RecyclerViewHolder(View itemView) {
+            super(itemView);
+            title = (TextView)itemView.findViewById(R.id.menu_rubrics_dialog_item_title);
         }
 
-        @Override public View getDropDownView(int position, View convertView, ViewGroup parent) {
-            int type = getItemViewType(position);
-            TextView tv = (TextView) LayoutInflater.from(context).inflate(type, parent, false);
-            MenuSpinnerItem item = getItem(position);
-            tv.setText(item.getTitle());
-            if (type == TYPE_HEADER) {
-                tv.setOnClickListener(null);
-            }
-            return tv;
-        }
-
-        @Override public void registerDataSetObserver(DataSetObserver observer) {}
-        @Override public void unregisterDataSetObserver(DataSetObserver observer) {}
-
-        @Override public int getCount() {
-            return items.size();
-        }
-
-        @Override public MenuSpinnerItem getItem(int position) {
-            return items.get(position);
-        }
-
-        @Override public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override public boolean hasStableIds() {
-            return true;
-        }
-
-        @Override public View getView(int position, View convertView, ViewGroup parent) {
-            TextView tv = new TextView(context);
-            tv.setText(getItem(position).getTitle());
-            tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-            return tv;
-        }
-
-        @Override public int getItemViewType(int position) {
-            MenuSpinnerItem item = getItem(position);
-            if (item.isHeader()) {
-                return TYPE_HEADER;
-            }
-            return TYPE_SIMPLE;
-        }
-
-        @Override public int getViewTypeCount() {
-            return 1;
-        }
-
-        @Override public boolean isEmpty() {
-            return false;
+        void setTitle(String text) {
+            title.setText(text);
         }
     }
 }

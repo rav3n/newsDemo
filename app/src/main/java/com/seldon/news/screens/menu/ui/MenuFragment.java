@@ -46,6 +46,7 @@ public class MenuFragment extends Fragment implements MenuView {
 
     private AllRubricsModel rubricsModel;
     private List<MenuPage> pages = new ArrayList<>();
+    private MenuPage currentPage;
 
     @Nullable @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -182,5 +183,6 @@ public class MenuFragment extends Fragment implements MenuView {
 
     private void setCurrentTab(int index) {
         viewPager.setCurrentItem(index, false);
+        currentPage = pages.get(index);
     }
 }
