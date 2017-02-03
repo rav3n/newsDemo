@@ -4,6 +4,7 @@ import com.seldon.news.common.base.data.NewsException;
 import com.seldon.news.common.rubrics.data.RubricEntity;
 import com.seldon.news.common.rubrics.domain.RubricsInteractor;
 import com.seldon.news.screens.menu.domain.MenuRubricsPresenter;
+import com.seldon.news.screens.menu.ui.news.RubricsViewModel;
 
 import org.junit.Test;
 

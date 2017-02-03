@@ -1,5 +1,6 @@
 package com.seldon.news.screens.menu.ui;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,25 +13,24 @@ import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.seldon.news.R;
 import com.seldon.news.common.Const;
 import com.seldon.news.common.app.NewsApplication;
-import com.seldon.news.common.rubrics.data.RubricEntity;
 import com.seldon.news.common.views.BottomNavigationView;
 import com.seldon.news.screens.menu.data.AllRubricsModel;
 import com.seldon.news.screens.menu.di.DaggerMenuComponent;
 import com.seldon.news.screens.menu.di.MenuUIModule;
 import com.seldon.news.screens.menu.domain.MenuRubricsPresenter;
+import com.seldon.news.screens.menu.ui.news.NewsPage;
+import com.seldon.news.screens.menu.ui.profile.ProfilePage;
+import com.seldon.news.screens.menu.ui.search.SearchPage;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-
-import fw.v6.core.utils.V6DebugLogger;
 
 public class MenuFragment extends Fragment implements MenuView {
 
@@ -90,17 +90,6 @@ public class MenuFragment extends Fragment implements MenuView {
         webView.loadUrl(url);
     }
 
-    private View firstView(String s, final RubricsViewModel viewModel) {
-        TextView tv = new TextView(getActivity());
-        tv.setText(s);
-        tv.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                RubricsBuilder.showDialog(getActivity(), viewModel);
-            }
-        });
-        return tv;
-    }
-
     @Override public void onRubricsLoaded(AllRubricsModel model) {
         this.rubricsModel = model;
         initNavigation();
@@ -110,11 +99,28 @@ public class MenuFragment extends Fragment implements MenuView {
         Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
     }
 
+    private MenuPageCallback pagesCallback = new MenuPageCallback() {
+        @Override
+        public WebView getWebView() {
+            return webView;
+        }
+
+        @Override
+        public AllRubricsModel getRubricsModel() {
+            return rubricsModel;
+        }
+
+        @Override
+        public Activity getContext() {
+            return getActivity();
+        }
+    };
+
     private void initNavigation() {
         pages.clear();
-        pages.add(new NewsPage());
-        pages.add(new SearchPage());
-        pages.add(new ProfilePage());
+        pages.add(new NewsPage(pagesCallback));
+        pages.add(new SearchPage(pagesCallback));
+        pages.add(new ProfilePage(pagesCallback));
 
         viewPager.setAdapter(new PagerAdapter() {
 
@@ -176,72 +182,5 @@ public class MenuFragment extends Fragment implements MenuView {
 
     private void setCurrentTab(int index) {
         viewPager.setCurrentItem(index, false);
-    }
-
-    abstract class MenuPage {
-
-        View pagerView;
-
-        View getPagerView() {
-            if (pagerView == null) {
-                pagerView = createPagerView();
-            }
-            return pagerView;
-        }
-
-        abstract View createPagerView();
-    }
-
-    class NewsPage extends MenuPage {
-
-        @Override
-        View createPagerView() {
-            final RubricsViewModel viewModel = new RubricsViewModel(
-                    R.string.menu_spinner_home,
-                    R.string.menu_spinner_all_rubrics,
-                    R.string.menu_spinner_user_rubrics,
-                    rubricsModel.generalRubrics,
-                    rubricsModel.userRubrics,
-                    new View.OnClickListener() {
-                        @Override public void onClick(View v) {
-                            V6DebugLogger.d("go to home");
-                        }
-                    },
-                    new View.OnClickListener() {
-                        @Override public void onClick(View v) {
-                            RubricEntity entity = (RubricEntity) v.getTag();
-                            V6DebugLogger.d("go to " + entity.getName());
-                        }
-                    });
-
-            TextView tv = new TextView(getActivity());
-            tv.setText("news view");
-            tv.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
-                    RubricsBuilder.showDialog(getActivity(), viewModel);
-                }
-            });
-            return tv;
-        }
-    }
-
-    class SearchPage extends MenuPage {
-
-        @Override
-        View createPagerView() {
-            TextView tv = new TextView(getActivity());
-            tv.setText("search view");
-            return tv;
-        }
-    }
-
-    class ProfilePage extends MenuPage {
-
-        @Override
-        View createPagerView() {
-            TextView tv = new TextView(getActivity());
-            tv.setText("profile view");
-            return tv;
-        }
     }
 }
